@@ -1,3 +1,13 @@
+# ------------ rake task options ------------
+
+# JS files to check by default, if no parameters are passed to rake test:jslint
+# (you may want to limit this only to your own scripts and exclude any external scripts and frameworks)
+
+paths:
+  - public/javascripts/**/*.js
+
+
+# ------------ jslint options ------------
 # see http://www.jslint.com/lint.html#options for more detailed explanations
 
 # "enforce" type options (true means potentially more warnings)

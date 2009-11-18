@@ -7,12 +7,16 @@ class JSLintOnRails
   DEFAULT_CONFIG_FILE = "#{PATH}/../jslint.yml"
   CUSTOM_CONFIG_FILE = "#{PATH}/../../../../config/jslint.yml"
 
-  def self.lint_files(file_list)
+  def self.lint_files(paths = nil)
     puts "Running JSLint:"
     default_config = YAML.load_file(DEFAULT_CONFIG_FILE)
     custom_config = YAML.load_file(CUSTOM_CONFIG_FILE) rescue {}
-    option_string = default_config.merge(custom_config).map { |k, v| "#{k}=#{v.inspect}" }.join(',')
+    config = default_config.merge(custom_config)
+    paths ||= config.delete("paths")
+    option_string = config.map { |k, v| "#{k}=#{v.inspect}" }.join(',')
+    file_list = paths.map { |p| Dir[p] }.flatten
     total_errors = 0
+
     file_list.each do |file|
       # TODO check if java is available
       print "checking #{File.basename(file)}... "

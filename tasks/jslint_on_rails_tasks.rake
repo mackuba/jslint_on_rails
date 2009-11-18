@@ -4,8 +4,8 @@ namespace :test do
 
   desc "..."
   task :jslint do
-    files = Dir['public/javascripts/hapnin/*.js']
-    JSLintOnRails.lint_files(files)
+    # TODO pass parameters
+    JSLintOnRails.lint_files
   end
 
 end
