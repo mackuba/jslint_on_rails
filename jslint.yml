@@ -3,6 +3,8 @@
 # JS files to check by default, if no parameters are passed to rake test:jslint
 # (you may want to limit this only to your own scripts and exclude any external scripts and frameworks)
 
+# this can be overridden by adding 'paths' parameter to rake command: rake test:jslint paths=path1,path2,...
+
 paths:
   - public/javascripts/**/*.js
 
