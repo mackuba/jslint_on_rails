@@ -1,15 +1,17 @@
+require 'ftools'
+
 class JSLintOnRails
 
   class NoJavaError < StandardError
   end
 
   PATH = File.dirname(__FILE__)
-  JAR_FILE = "#{PATH}/rhino-js.jar"
-  TEST_JAR_FILE = "#{PATH}/test.jar"
+  JAR_FILE = File.expand_path("#{PATH}/rhino-js.jar")
+  TEST_JAR_FILE = File.expand_path("#{PATH}/test.jar")
   JAR_CLASS = "org.mozilla.javascript.tools.shell.Main"
-  JSLINT_FILE = "#{PATH}/jslint.js"
-  DEFAULT_CONFIG_FILE = "#{PATH}/../jslint.yml"
-  CUSTOM_CONFIG_FILE = "#{PATH}/../../../../config/jslint.yml"
+  JSLINT_FILE = File.expand_path("#{PATH}/jslint.js")
+  DEFAULT_CONFIG_FILE = File.expand_path("#{PATH}/../jslint.yml")
+  CUSTOM_CONFIG_FILE = File.expand_path("#{PATH}/../../../../config/jslint.yml")
 
   def self.lint_files(paths = nil)
     puts "Running JSLint:"
@@ -42,6 +44,31 @@ class JSLintOnRails
       puts "\nNo JS errors found."
     else
       puts "\nFound #{total_errors} errors, JSLint test failed."
+    end
+  end
+
+  def self.copy_config_file
+    print "Copying default config file... "
+    if File.exists?(CUSTOM_CONFIG_FILE)
+      puts "\n\nWarning: file config/jslint.yml exists, so it won't be overwritten. " +
+           "You can copy it manually from vendor/plugins/jslint_on_rails if you want to reset it."
+    else
+      File.copy(DEFAULT_CONFIG_FILE, CUSTOM_CONFIG_FILE)
+      puts "OK"
+    end
+  end
+
+  def self.remove_config_file
+    print "Removing config file... "
+    if File.exists?(CUSTOM_CONFIG_FILE) && File.file?(CUSTOM_CONFIG_FILE)
+      if File.read(CUSTOM_CONFIG_FILE) == File.read(DEFAULT_CONFIG_FILE)
+        File.delete(CUSTOM_CONFIG_FILE)
+        puts "OK"
+      else
+        puts "File was modified, so it won't be deleted automatically."
+      end
+    else
+      puts "OK (no config file found)"
     end
   end
 
