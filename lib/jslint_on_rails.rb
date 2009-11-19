@@ -1,7 +1,11 @@
 class JSLintOnRails
 
+  class NoJavaError < StandardError
+  end
+
   PATH = File.dirname(__FILE__)
   JAR_FILE = "#{PATH}/rhino-js.jar"
+  TEST_JAR_FILE = "#{PATH}/test.jar"
   JAR_CLASS = "org.mozilla.javascript.tools.shell.Main"
   JSLINT_FILE = "#{PATH}/jslint.js"
   DEFAULT_CONFIG_FILE = "#{PATH}/../jslint.yml"
@@ -17,8 +21,12 @@ class JSLintOnRails
     file_list = paths.map { |p| Dir[p] }.flatten
     total_errors = 0
 
+    if %x(java -cp #{TEST_JAR_FILE} Test).strip != "OK"
+      puts "\nError: please install Java before running JSLint."
+      raise NoJavaError
+    end
+
     file_list.each do |file|
-      # TODO check if java is available
       print "checking #{File.basename(file)}... "
       result = %x(java -cp #{JAR_FILE} #{JAR_CLASS} #{JSLINT_FILE} #{file} #{option_string})
       if result =~ /jslint: No problems found/
