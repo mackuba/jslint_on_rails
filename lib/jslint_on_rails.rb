@@ -2,9 +2,6 @@ require 'ftools'
 
 class JSLintOnRails
 
-  class NoJavaError < StandardError
-  end
-
   PATH = File.dirname(__FILE__)
   JAR_FILE = File.expand_path("#{PATH}/rhino-js.jar")
   TEST_JAR_FILE = File.expand_path("#{PATH}/test.jar")
@@ -24,15 +21,14 @@ class JSLintOnRails
     total_errors = 0
 
     if %x(java -cp #{TEST_JAR_FILE} Test).strip != "OK"
-      puts "\nError: please install Java before running JSLint."
-      raise NoJavaError
+      raise "Error: please install Java before running JSLint."
     end
 
     file_list.each do |file|
       print "checking #{File.basename(file)}... "
       result = %x(java -cp #{JAR_FILE} #{JAR_CLASS} #{JSLINT_FILE} #{file} #{option_string})
       if result =~ /jslint: No problems found/
-        puts "OK"
+        puts "OK."
       else
         errors = result.scan(/Lint at line/).length
         total_errors += errors
@@ -43,7 +39,7 @@ class JSLintOnRails
     if total_errors == 0
       puts "\nNo JS errors found."
     else
-      puts "\nFound #{total_errors} errors, JSLint test failed."
+      raise "Found #{total_errors} errors, JSLint test failed."
     end
   end
 
@@ -54,7 +50,7 @@ class JSLintOnRails
            "You can copy it manually from vendor/plugins/jslint_on_rails if you want to reset it."
     else
       File.copy(DEFAULT_CONFIG_FILE, CUSTOM_CONFIG_FILE)
-      puts "OK"
+      puts "OK."
     end
   end
 
@@ -63,12 +59,12 @@ class JSLintOnRails
     if File.exists?(CUSTOM_CONFIG_FILE) && File.file?(CUSTOM_CONFIG_FILE)
       if File.read(CUSTOM_CONFIG_FILE) == File.read(DEFAULT_CONFIG_FILE)
         File.delete(CUSTOM_CONFIG_FILE)
-        puts "OK"
+        puts "OK."
       else
         puts "File was modified, so it won't be deleted automatically."
       end
     else
-      puts "OK (no config file found)"
+      puts "OK (no config file found)."
     end
   end
 
