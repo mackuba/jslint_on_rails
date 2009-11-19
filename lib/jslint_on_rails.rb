@@ -11,7 +11,7 @@ class JSLintOnRails
   CUSTOM_CONFIG_FILE = File.expand_path("#{PATH}/../../../../config/jslint.yml")
 
   def self.lint_files(paths = nil)
-    puts "Running JSLint:"
+    puts "Running JSLint:\n\n"
     default_config = YAML.load_file(DEFAULT_CONFIG_FILE)
     custom_config = YAML.load_file(CUSTOM_CONFIG_FILE) rescue {}
     config = default_config.merge(custom_config)
@@ -25,23 +25,8 @@ class JSLintOnRails
       raise "Error: please install Java before running JSLint."
     end
 
-    file_list.each do |file|
-      print "checking #{File.basename(file)}... "
-      result = %x(java -cp #{JAR_FILE} #{JAR_CLASS} #{JSLINT_FILE} #{file} #{option_string})
-      if result =~ /jslint: No problems found/
-        puts "OK."
-      else
-        errors = result.scan(/Lint at line/).length
-        total_errors += errors
-        puts "#{errors} error#{errors == 1 ? '' : 's'}:\n\n"
-        puts result
-      end
-    end
-    if total_errors == 0
-      puts "\nNo JS errors found."
-    else
-      raise "Found #{total_errors} errors, JSLint test failed."
-    end
+    success = system("java -cp #{JAR_FILE} #{JAR_CLASS} #{JSLINT_FILE} #{option_string} #{file_list.join(" ")}")
+    raise "JSLint test failed." unless success
   end
 
   def self.copy_config_file
