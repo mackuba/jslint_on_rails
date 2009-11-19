@@ -3,14 +3,14 @@ require 'ftools'
 class JSLintOnRails
 
   PATH = File.dirname(__FILE__)
-  JAR_FILE = File.expand_path("#{PATH}/rhino-js.jar")
+  JAR_FILE = File.expand_path("#{PATH}/rhino.jar")
   TEST_JAR_FILE = File.expand_path("#{PATH}/test.jar")
   JAR_CLASS = "org.mozilla.javascript.tools.shell.Main"
   JSLINT_FILE = File.expand_path("#{PATH}/jslint.js")
   DEFAULT_CONFIG_FILE = File.expand_path("#{PATH}/../jslint.yml")
   CUSTOM_CONFIG_FILE = File.expand_path("#{PATH}/../../../../config/jslint.yml")
 
-  def self.lint_files(paths = nil)
+  def self.run_lint(paths = nil)
     puts "Running JSLint:\n\n"
     default_config = YAML.load_file(DEFAULT_CONFIG_FILE)
     custom_config = YAML.load_file(CUSTOM_CONFIG_FILE) rescue {}
