@@ -15,8 +15,8 @@ class JSLintOnRails
     default_config = YAML.load_file(DEFAULT_CONFIG_FILE)
     custom_config = YAML.load_file(CUSTOM_CONFIG_FILE) rescue {}
     config = default_config.merge(custom_config)
-    paths ||= ENV['paths'] && ENV['paths'].split(/,/)
-    paths ||= config.delete("paths")
+    paths_from_config = config.delete("paths")
+    paths ||= (ENV['paths'] && ENV['paths'].split(/,/)) || paths_from_config
     option_string = config.map { |k, v| "#{k}=#{v.inspect}" }.join(',')
     file_list = paths.map { |p| Dir[p] }.flatten
     total_errors = 0
