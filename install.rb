@@ -10,4 +10,4 @@ end
 
 puts "\n"
 puts "JSLint on Rails plugin is now installed. Take a look at the config file (config/jslint.yml) " +
-     "and use 'rake jslint' to start the test.\nHappy debugging! :)"
+     "and use 'rake jslint' to start the test.\nHappy JavaScript testing! :)"
