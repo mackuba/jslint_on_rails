@@ -10,15 +10,21 @@ class JSLintOnRails
   DEFAULT_CONFIG_FILE = File.expand_path("#{PATH}/../jslint.yml")
   CUSTOM_CONFIG_FILE = File.expand_path("#{PATH}/../../../../config/jslint.yml")
 
-  def self.run_lint(paths = nil)
+  def self.run_lint(paths = nil, exclude_paths = nil)
     puts "Running JSLint:\n\n"
     default_config = YAML.load_file(DEFAULT_CONFIG_FILE)
     custom_config = YAML.load_file(CUSTOM_CONFIG_FILE) rescue {}
     config = default_config.merge(custom_config)
+
     paths_from_config = config.delete("paths")
     paths ||= (ENV['paths'] && ENV['paths'].split(/,/)) || paths_from_config
+    paths_file_list = paths.map { |p| Dir[p] }.flatten
+    exclude_paths_from_config = config.delete("exclude_paths")
+    exclude_paths ||= (ENV['exclude_paths'] && ENV['exclude_paths'].split(/,/)) || exclude_paths_from_config
+    exclude_paths_file_list = exclude_paths.map { |p| Dir[p] }.flatten
+    file_list = paths_file_list - exclude_paths_file_list
+
     option_string = config.map { |k, v| "#{k}=#{v.inspect}" }.join(',')
-    file_list = paths.map { |p| Dir[p] }.flatten
     total_errors = 0
 
     if %x(java -cp #{TEST_JAR_FILE} Test).strip != "OK"

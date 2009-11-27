@@ -18,7 +18,7 @@ This will create a sample `jslint.yml` config file in your config directory. In 
 * define which Javascript files are checked by default; you'll almost certainly want to change that, because the default
 is `public/javascripts/**/*.js` which means all Javascript files, and you probably don't want JSLint to check entire
 jQuery, Prototype or whatever other libraries you use - so change this so that only your scripts are checked (you can
-put multiple entries under "paths:")
+put multiple entries under "paths:" and "exclude_paths:")
 * tweak JSLint options to enable or disable specific checks - I've set the defaults to what I believe is reasonable,
 but what's reasonable for me may not be reasonable for you
 
@@ -61,10 +61,10 @@ If anything is wrong, you will get something like this instead:
     rake aborted!
     JSLint test failed.
 
-If you want to test specific file or files (just once, without modifying the config), you can pass paths to the rake
+If you want to test specific file or files (just once, without modifying the config), you can pass paths and/or paths to exclude to the rake
 task:
 
-    rake jslint paths=public/javascripts/models/*.js,public/javascripts/lib/*.js
+    rake jslint paths=public/javascripts/models/*.js,public/javascripts/lib/*.js exclude_paths=public/javascripts/jquery.js,public/javascripts/jquery-ui.js
 
 For the best effect, you should include JSLint check in your Continuous Integration build - that way, you'll get
 immediate notification when you've committed JS code with errors.
