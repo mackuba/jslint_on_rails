@@ -19,7 +19,7 @@ class JSLintOnRails
 
     included_files = files_matching_paths(paths, config, 'paths')
     excluded_files = files_matching_paths(exclude_paths, config, 'exclude_paths')
-    file_list = included_files - excluded_files
+    file_list = exclude_files(included_files, excluded_files)
 
     option_string = config.map { |k, v| "#{k}=#{v.inspect}" }.join(',')
     total_errors = 0
@@ -35,7 +35,22 @@ class JSLintOnRails
   def self.files_matching_paths(path_list, config, option_name)
     paths_from_config = config.delete(option_name)
     path_list ||= (ENV[option_name] && ENV[option_name].split(/,/)) || paths_from_config || []
-    path_list.map { |p| Dir[p] }.flatten.uniq
+    file_list = path_list.map { |p| Dir[p] }.flatten
+    unique_files(file_list)
+  end
+
+  # workaround for a problem with case-insensitive file systems like HFS on Mac
+  def self.unique_files(list)
+    files = []
+    list.each do |entry|
+      files << entry unless files.any? { |f| File.identical?(f, entry) }
+    end
+    files
+  end
+
+  # workaround for a problem with case-insensitive file systems like HFS on Mac
+  def self.exclude_files(list, excluded)
+    list.reject { |entry| excluded.any? { |f| File.identical?(f, entry) }}
   end
 
   def self.copy_config_file
