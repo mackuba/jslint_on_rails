@@ -24,9 +24,8 @@ class JSLintOnRails
     option_string = config.map { |k, v| "#{k}=#{v.inspect}" }.join(',')
     total_errors = 0
 
-    if %x(java -cp #{TEST_JAR_FILE} Test).strip != "OK"
-      raise "Error: please install Java before running JSLint."
-    end
+    java_test = %x(java -cp #{TEST_JAR_FILE} Test)
+    raise "Error: please install Java before running JSLint." unless java_test && java_test.strip == "OK"
 
     success = system("java -cp #{JAR_FILE} #{JAR_CLASS} #{JSLINT_FILE} #{option_string} #{file_list.join(" ")}")
     raise "JSLint test failed." unless success
