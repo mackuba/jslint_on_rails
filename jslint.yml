@@ -3,10 +3,12 @@
 # JS files to check by default, if no parameters are passed to rake jslint
 # (you may want to limit this only to your own scripts and exclude any external scripts and frameworks)
 
-# this can be overridden by adding 'paths' and 'exclude_paths' parameter to rake command: rake jslint paths=path1,path2,... exclude_paths=library1,library2,...
+# this can be overridden by adding 'paths' and 'exclude_paths' parameter to rake command:
+#   rake jslint paths=path1,path2,... exclude_paths=library1,library2,...
 
 paths:
   - public/javascripts/**/*.js
+
 exclude_paths:
 
 

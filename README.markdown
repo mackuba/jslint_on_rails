@@ -61,8 +61,8 @@ If anything is wrong, you will get something like this instead:
     rake aborted!
     JSLint test failed.
 
-If you want to test specific file or files (just once, without modifying the config), you can pass paths and/or paths to exclude to the rake
-task:
+If you want to test specific file or files (just once, without modifying the config), you can pass paths to include
+and/or paths to exclude to the rake task:
 
     rake jslint paths=public/javascripts/models/*.js,public/javascripts/lib/*.js exclude_paths=public/javascripts/jquery.js,public/javascripts/jquery-ui.js
 

@@ -12,17 +12,14 @@ class JSLintOnRails
 
   def self.run_lint(paths = nil, exclude_paths = nil)
     puts "Running JSLint:\n\n"
+
     default_config = YAML.load_file(DEFAULT_CONFIG_FILE)
     custom_config = YAML.load_file(CUSTOM_CONFIG_FILE) rescue {}
     config = default_config.merge(custom_config)
 
-    paths_from_config = config.delete("paths")
-    paths ||= (ENV['paths'] && ENV['paths'].split(/,/)) || paths_from_config
-    paths_file_list = paths.map { |p| Dir[p] }.flatten
-    exclude_paths_from_config = config.delete("exclude_paths")
-    exclude_paths ||= (ENV['exclude_paths'] && ENV['exclude_paths'].split(/,/)) || exclude_paths_from_config
-    exclude_paths_file_list = exclude_paths.map { |p| Dir[p] }.flatten
-    file_list = paths_file_list - exclude_paths_file_list
+    included_files = files_matching_paths(paths, config, 'paths')
+    excluded_files = files_matching_paths(exclude_paths, config, 'exclude_paths')
+    file_list = included_files - excluded_files
 
     option_string = config.map { |k, v| "#{k}=#{v.inspect}" }.join(',')
     total_errors = 0
@@ -33,6 +30,12 @@ class JSLintOnRails
 
     success = system("java -cp #{JAR_FILE} #{JAR_CLASS} #{JSLINT_FILE} #{option_string} #{file_list.join(" ")}")
     raise "JSLint test failed." unless success
+  end
+
+  def self.files_matching_paths(path_list, config, option_name)
+    paths_from_config = config.delete(option_name)
+    path_list ||= (ENV[option_name] && ENV[option_name].split(/,/)) || paths_from_config || []
+    path_list.map { |p| Dir[p] }.flatten.uniq
   end
 
   def self.copy_config_file
