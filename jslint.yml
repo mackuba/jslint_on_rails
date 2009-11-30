@@ -58,3 +58,4 @@ widget:   false     # true if the Yahoo Widgets globals should be predefined
 # jslint_on_rails custom options
 
 lastsemic: false    # true if semicolon is not required at the end of function (e.g. x.map(function(i) { return i }); )
+newstat:   false    # true if using 'new' as a statement (without assignment) is allowed (e.g. new Ajax.Request(...))
