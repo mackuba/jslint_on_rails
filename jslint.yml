@@ -55,7 +55,23 @@ rhino:    false     # true if the Rhino environment globals should be predefined
 sidebar:  false     # true if the Windows Sidebar Gadgets globals should be predefined
 widget:   false     # true if the Yahoo Widgets globals should be predefined
 
-# jslint_on_rails custom options
 
-lastsemic: false    # true if semicolon is not required at the end of function (e.g. x.map(function(i) { return i }); )
-newstat:   false    # true if using 'new' as a statement (without assignment) is allowed (e.g. new Ajax.Request(...))
+# ------------ jslint_on_rails custom lint options (switch all to true if you trust me) ------------
+
+# ignores "missing semicolon" warning at the end of a function; this lets you write one-liners
+# like: x.map(function(i) { return i }); without having to put a second semicolon inside the function
+lastsemic: false
+
+# allows you to use the 'new' expression as a statement (without assignment)
+# so you can call e.g. new Ajax.Request(...), new Effect.Highlight(...) without assigning to a dummy variable
+newstat: false
+
+# ignores the "Expected an assignment or function call and instead saw an expression" warning,
+# if the expression contains a proper statement and makes sense; this lets you write things like:
+#    element && element.show();
+#    valid || other || lastChance || alert('OMG!');
+#    selected ? show() : hide();
+# although these will still cause a warning:
+#    element && link;
+#    selected ? 5 : 10;
+statinexp: false
