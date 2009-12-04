@@ -69,6 +69,47 @@ and/or paths to exclude to the rake task:
 For the best effect, you should include JSLint check in your Continuous Integration build - that way, you'll get
 immediate notification when you've committed JS code with errors.
 
+## Additional options
+
+I've added some additional options to JSLint to get rid of some warnings which I thought didn't make sense. They're all
+disabled by default, but feel free to enable any or all of them if you feel abused by JSLint.
+
+Here's a documentation for all the extra options:
+
+### lastsemic
+
+If set to true, this will ignore warnings about missing semicolon after a statement, if the statement is the last one in
+a block or function. I've added this because I like to omit the semicolon in one-liner anonymous functions, in
+situations like this:
+
+	var ids = $$('.entry').map(function(e) { return e.id });
+
+### newstat
+
+Allows you to use a call to 'new' as a whole statement, without assigning the result anywhere. Sometimes you want to
+create an instance of a class, but you don't need to assign it anywhere - the call to constructor starts the action
+automatically. This includes calls like `new Ajax.Request(...)` or `new Effect.Highlight(...)` used when working with
+Prototype and Scriptaculous.
+
+### statinexp
+
+JSLint has a warning that says "Expected an assignment or function call and instead saw an expression" - you get it
+when you write an expression and you don't use it for anything, like if you wrote such line:
+
+    $$('.entry').length;
+
+Just checking the length without assigning it anywhere or passing to any function doesn't make any sense, so it's good
+that JSLint complains. However, there are some cases where the code makes perfect sense, but JSLint still thinks it
+doesn't. Examples:
+
+    element && element.show();  // call show only if element is not null
+    selected ? element.show() : element.hide();  // more readable than if & else with brackets
+
+So I've tweaked the code that creates this warning so that it doesn't print it if the code makes sense. Specifically:
+
+* expressions joined with && or || are accepted if the last one in the line is a statement
+* expressions with ?: are accepted if both alternatives (before and after the colon) are statements
+
 ## Credits
 
 * JSLint on Rails was created by [Jakub Suder](http://psionides.jogger.pl), licensed under MIT License

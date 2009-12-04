@@ -56,10 +56,10 @@ sidebar:  false     # true if the Windows Sidebar Gadgets globals should be pred
 widget:   false     # true if the Yahoo Widgets globals should be predefined
 
 
-# ------------ jslint_on_rails custom lint options (switch all to true if you trust me) ------------
+# ------------ jslint_on_rails custom lint options (switch to true to disable some annoying warnings) ------------
 
 # ignores "missing semicolon" warning at the end of a function; this lets you write one-liners
-# like: x.map(function(i) { return i }); without having to put a second semicolon inside the function
+# like: x.map(function(i) { return i + 1 }); without having to put a second semicolon inside the function
 lastsemic: false
 
 # allows you to use the 'new' expression as a statement (without assignment)
