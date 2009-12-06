@@ -1,9 +1,10 @@
-require File.dirname(__FILE__) + '/lib/jslint_on_rails'
+require File.expand_path(File.dirname(__FILE__) + '/lib/jslint')
+require File.expand_path(File.dirname(__FILE__) + '/lib/jslint/rails')
 
 puts "\n"
 
 begin
-  JSLintOnRails.remove_config_file
+  JSLint::Utils.remove_config_file
 rescue StandardError => error
   puts "Error: #{error.message}"
 end
