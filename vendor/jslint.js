@@ -329,12 +329,7 @@ var JSLINT = (function () {
             strict     : true, // require the "use strict"; pragma
             sub        : true, // if all forms of subscript notation are tolerated
             white      : true, // if strict whitespace rules apply
-            widget     : true, // if the Yahoo Widgets globals should be predefined
-
-            // jslint_on_rails options
-            lastsemic  : true, // if lack of semicolon at the end of block should be ignored
-            newstat    : true, // if 'new used as a statement' warning should be ignored
-            statinexp  : true  // ignores 'expected statement, got expression' errors if exp. contains a statement
+            widget     : true  // if the Yahoo Widgets globals should be predefined
         },
 
 // browser contains a set of global names which are commonly provided by a
@@ -2424,7 +2419,7 @@ loop:   for (;;) {
         if (!noindent) {
             indentation();
         }
-        if (nexttoken.id === 'new' && !option.newstat) {
+        if (nexttoken.id === 'new') {
             warning("'new' should not be used as a statement.");
         }
         r = parse(0, true);
@@ -2438,10 +2433,8 @@ loop:   for (;;) {
                         token);
             }
             if (nexttoken.id !== ';') {
-                if (!(nexttoken.id == '}' && option.lastsemic)) {
-                    warningAt("Missing semicolon.", token.line,
-                            token.from + token.value.length);
-                }
+                warningAt("Missing semicolon.", token.line,
+                        token.from + token.value.length);
             } else {
                 adjacent(token, nexttoken);
                 advance(';');
@@ -4004,30 +3997,11 @@ loop:   for (;;) {
         that.right = parse(10);
         advance(':');
         that['else'] = parse(10);
-        if (option.statinexp) {
-          that.exps = that.right.exps && that['else'].exps;
-        }
         return that;
     }, 30);
 
-    infix('||', function(left, that) {
-      that.left = left;
-      that.right = parse(40);
-      if (option.statinexp) {
-        that.exps = that.right.exps;
-      }
-      return that;
-    }, 40);
-
-    infix('&&', function(left, that) {
-      that.left = left;
-      that.right = parse(50);
-      if (option.statinexp) {
-        that.exps = that.right.exps;
-      }
-      return that;
-    }, 50);
-
+    infix('||', 'or', 40);
+    infix('&&', 'and', 50);
     bitwise('|', 'bitor', 70);
     bitwise('^', 'bitxor', 80);
     bitwise('&', 'bitand', 90);
@@ -5453,65 +5427,3 @@ loop:   for (;;) {
     return itself;
 
 }());
-
-// rhino.js
-// 2009-06-04
-/* Copyright (c) 2002 Douglas Crockford  (www.JSLint.com) Rhino Edition */
-/* Modified by Jakub Suder */
-
-// This is the Rhino companion to fulljslint.js.
-
-/*extern JSLINT */
-/*jslint rhino: true*/
-
-(function (args) {
-
-    function pluralize(amount, word) {
-        return amount + " " + word + ((amount == 1) ? "" : "s");
-    }
-
-    // parse options from a comma-separated string into a hash
-    var optionFields = args[0].split(",");
-    var options = {};
-    for (var i = 0; i < optionFields.length; i++) {
-        var equalsSignIndex = optionFields[i].lastIndexOf("=");
-        if (equalsSignIndex != -1) {
-            var key = optionFields[i].substr(0, equalsSignIndex);
-            var value = optionFields[i].substr(equalsSignIndex + 1);
-            options[key] = eval(value);
-        }
-    }
-
-    var totalErrors = 0;
-
-    // test every file
-    for (var f = 1; f < args.length; f++) {
-        java.lang.System.out.print("checking " + args[f] + "... ");
-
-        var input = readFile(args[f]);
-        if (!input) {
-            print("Error: couldn't open file.");
-        } else if (!JSLINT(input, options)) {
-            print(pluralize(JSLINT.errors.length, "error") + ":\n");
-            totalErrors += JSLINT.errors.length;
-            for (var i = 0; i < JSLINT.errors.length; i += 1) {
-                var e = JSLINT.errors[i];
-                if (e) {
-                    print('Lint at line ' + e.line + ' character ' + e.character + ': ' + e.reason);
-                    print((e.evidence || '').replace(/^\s*(\S*(\s+\S+)*)\s*$/, "$1"));
-                    print('');
-                }
-            }
-        } else {
-            print("OK");
-        }
-    }
-
-    if (totalErrors === 0) {
-        print("\nNo JS errors found.");
-    } else {
-        print("\nFound " + pluralize(totalErrors, "error") + ".");
-        quit(1);
-    }
-
-}(arguments));
