@@ -31,16 +31,16 @@ To use JSLint as a gem, follow these steps:
 bundler, or just plain old `gem install jslint_on_rails`)
 * in your Rakefile, add a line to load the JSLint tasks:
 
-    require 'jslint/tasks'
+        require 'jslint/tasks'
 
 * below that line, set JSLint's config_path variable to point it to a place where you want your JSLint configuration
 file to be kept - for example:
 
-    JSLint.config_path = "config/jslint.yml"
+        JSLint.config_path = "config/jslint.yml"
     
 * run a rake task which will generate a sample config file for you:
 
-    rake jslint:copy_config
+        rake jslint:copy_config
 
 
 ## Installation (custom)
