@@ -34,7 +34,7 @@ module JSLint
       end
 
       def paths_from_command_line(field)
-        argument = ENV[field]
+        argument = ENV[field] || ENV[field.upcase]
         argument && argument.split(/,/)
       end
 
