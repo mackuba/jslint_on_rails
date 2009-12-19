@@ -24,19 +24,27 @@ module JSLint
       excluded_files = files_matching_paths(options, :exclude_paths)
       @file_list = Utils.exclude_files(included_files, excluded_files)
 
-      ['paths', 'exclude_paths', 'config_path'].each { |field| @config.delete(field) }
+      ['paths', 'exclude_paths'].each { |field| @config.delete(field) }
     end
 
     def run
       check_java
-      puts "Running JSLint:\n\n"
-      command = "java -cp #{RHINO_JAR_FILE} #{RHINO_JAR_CLASS} #{JSLINT_FILE} #{option_string} #{@file_list.join(' ')}"
-      success = system(command)
+      Utils.xputs "Running JSLint:\n\n"
+      arguments = "#{JSLINT_FILE} #{option_string} #{@file_list.join(' ')}"
+      success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments)
       raise LintCheckFailure, "JSLint test failed." unless success
     end
 
 
     private
+
+    def call_java_with_output(jar, mainClass, arguments = "")
+      %x(java -cp #{jar} #{mainClass} #{arguments})
+    end
+
+    def call_java_with_status(jar, mainClass, arguments = "")
+      system("java -cp #{jar} #{mainClass} #{arguments}")
+    end
 
     def option_string
       @config.map { |k, v| "#{k}=#{v.inspect}" }.join(',')
@@ -44,7 +52,7 @@ module JSLint
 
     def check_java
       unless @java_ok
-        java_test = %x(java -cp #{TEST_JAR_FILE} #{TEST_JAR_CLASS})
+        java_test = call_java_with_output(TEST_JAR_FILE, TEST_JAR_CLASS)
         if java_test.strip == "OK"
           @java_ok = true
         else
