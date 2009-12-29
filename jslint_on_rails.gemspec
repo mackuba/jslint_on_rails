@@ -1,3 +1,6 @@
+lib_dir = File.expand_path(File.dirname(__FILE__) + '/lib')
+$LOAD_PATH << lib_dir unless $LOAD_PATH.include?(lib_dir)
+
 require 'jslint/utils'
 
 Gem::Specification.new do |s|
@@ -10,5 +13,5 @@ Gem::Specification.new do |s|
   s.email = "jakub.suder@gmail.com"
 
   s.requirements = ['Java JRE (5.0 or later)']
-  s.files = ['MIT-LICENSE', 'README.markdown'] + Dir['config/*'] + Dir['lib/**/*.rb'] + Dir['vendor/*']
+  s.files = ['MIT-LICENSE', 'README.markdown', 'Gemfile', 'Rakefile'] + Dir['lib/**/*'] + Dir['spec/**/*']
 end
