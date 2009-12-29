@@ -2,7 +2,8 @@ require 'ftools'
 
 module JSLint
 
-  DEFAULT_CONFIG_FILE = File.expand_path(File.dirname(__FILE__) + "/../../config/jslint.yml")
+  VERSION = "1.0.1"
+  DEFAULT_CONFIG_FILE = File.expand_path(File.dirname(__FILE__) + "/config/jslint.yml")
 
   class << self
     attr_accessor :config_path

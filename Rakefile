@@ -1,4 +1,4 @@
-require 'vendor/gems/environment'
+require 'gems/environment'
 require 'spec/rake/spectask'
 
 desc 'Run the specs'

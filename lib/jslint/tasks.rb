@@ -1,4 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + '/../jslint')
+require 'jslint/lint'
+require 'jslint/utils'
 
 desc "Run JSLint check on selected Javascript files"
 task :jslint do

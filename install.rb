@@ -1,5 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + '/lib/jslint')
-require File.expand_path(File.dirname(__FILE__) + '/lib/jslint/rails')
+require 'jslint/utils'
+require 'jslint/rails'
 
 puts "\n"
 

@@ -48,11 +48,13 @@ file to be kept - for example:
 If you wish to write your own rake task to run JSLint, you can create and execute the JSLint object manually:
 
     require 'jslint'
+    
     lint = JSLint::Lint.new(
       :paths => ['public/javascripts/**/*.js'],
       :exclude_paths => ['public/javascripts/vendor/**/*.js'],
       :config_path => 'config/jslint.yml'
     )
+    
     lint.run
 
 

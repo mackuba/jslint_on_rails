@@ -1,13 +1,16 @@
+require 'jslint/errors'
+require 'jslint/utils'
+
 module JSLint
 
   PATH = File.dirname(__FILE__)
 
-  TEST_JAR_FILE = File.expand_path("#{PATH}/../../vendor/test.jar")
-  RHINO_JAR_FILE = File.expand_path("#{PATH}/../../vendor/rhino.jar")
+  TEST_JAR_FILE = File.expand_path("#{PATH}/vendor/test.jar")
+  RHINO_JAR_FILE = File.expand_path("#{PATH}/vendor/rhino.jar")
   TEST_JAR_CLASS = "Test"
   RHINO_JAR_CLASS = "org.mozilla.javascript.tools.shell.Main"
 
-  JSLINT_FILE = File.expand_path("#{PATH}/../../vendor/jslint.js")
+  JSLINT_FILE = File.expand_path("#{PATH}/vendor/jslint.js")
 
   class Lint
 
