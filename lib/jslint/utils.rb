@@ -2,7 +2,7 @@ require 'ftools'
 
 module JSLint
 
-  VERSION = "1.0.1"
+  VERSION = "1.0.2"
   DEFAULT_CONFIG_FILE = File.expand_path(File.dirname(__FILE__) + "/config/jslint.yml")
 
   class << self
