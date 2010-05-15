@@ -36,7 +36,7 @@ white:    false     # true if strict whitespace rules apply (see also 'indent' o
 cap:      false     # true if upper case HTML should be allowed
 css:      true      # true if CSS workarounds should be tolerated
 debug:    false     # true if debugger statements should be allowed (set to false before going into production)
-es5:      true      # true if ECMAScript 5 syntax should be allowed
+es5:      false     # true if ECMAScript 5 syntax should be allowed
 evil:     false     # true if eval should be allowed
 forin:    true      # true if unfiltered 'for in' statements should be allowed
 fragment: true      # true if HTML fragments should be allowed
