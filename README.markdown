@@ -10,6 +10,11 @@ itself written in JavaScript, and is run using the [Rhino](http://www.mozilla.or
 Java). Any decent version of Java will do (and by decent I mean 5.0 or later).
 
 
+## Compatibility
+
+Latest version should be compatible with Ruby 1.9 and Rails 3 (and also with Ruby 1.8 and Rails 2, of course).
+
+
 ## Installation (Rails)
 
 If you use Rails, you can install the library as a plugin - it's less work to set it up this way.
