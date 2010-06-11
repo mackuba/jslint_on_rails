@@ -66,6 +66,7 @@ module JSLint
 
     def files_matching_paths(options, field)
       path_list = options[field] || @config[field.to_s] || []
+      path_list = [path_list] unless path_list.is_a?(Array)
       file_list = path_list.map { |p| Dir[p] }.flatten
       Utils.unique_files(file_list)
     end

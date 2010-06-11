@@ -1,4 +1,4 @@
-require 'ftools'
+require 'fileutils'
 
 module JSLint
 
@@ -54,7 +54,7 @@ module JSLint
           xputs "\n\nWarning: config file exists, so it won't be overwritten. " +
                 "You can copy it manually from the jslint_on_rails directory if you want to reset it."
         else
-          File.copy(JSLint::DEFAULT_CONFIG_FILE, JSLint.config_path)
+          FileUtils.copy(JSLint::DEFAULT_CONFIG_FILE, JSLint.config_path)
           xputs "OK."
         end
       end

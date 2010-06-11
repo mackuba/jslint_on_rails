@@ -74,12 +74,16 @@ describe JSLint::Lint do
     lint = JSLint::Lint.new
     lint.instance_variable_set("@config", { 'debug' => true, 'semicolons' => false, 'linelength' => 120 })
     setup_java(lint)
+    param_string = ""
     lint.
       should_receive(:call_java_with_status).
       once.
-      with(an_instance_of(String), an_instance_of(String), /semicolons=false,linelength=120,debug=true/).
-      and_return(true)
+      with(an_instance_of(String), an_instance_of(String), an_instance_of(String)).
+      and_return { |a, b, c| param_string = c; true }
     lint.run
+    param_string.should =~ /semicolons=false/
+    param_string.should =~ /linelength=120/
+    param_string.should =~ /debug=true/
   end
 
   it "should pass space-separated list of files to JSLint" do
