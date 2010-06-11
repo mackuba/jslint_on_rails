@@ -1,4 +1,7 @@
-require 'gems/environment'
+require "rubygems"
+require "bundler"
+Bundler.setup
+
 require 'spec/rake/spectask'
 
 desc 'Run the specs'

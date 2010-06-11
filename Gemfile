@@ -1,8 +1,5 @@
-disable_system_gems
-clear_sources
-source "http://gemcutter.org"
-source "http://gems.github.com"
-bundle_path 'gems'
+source "http://rubygems.org"
 
 gem 'rspec'
 gem 'fakefs'
+gem 'rake'
