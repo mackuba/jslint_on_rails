@@ -26,6 +26,7 @@ module JSLint
       included_files = files_matching_paths(options, :paths)
       excluded_files = files_matching_paths(options, :exclude_paths)
       @file_list = Utils.exclude_files(included_files, excluded_files)
+      @file_list.delete_if { |f| File.size(f) == 0 }
 
       ['paths', 'exclude_paths'].each { |field| @config.delete(field) }
     end
