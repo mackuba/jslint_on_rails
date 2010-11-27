@@ -49,13 +49,13 @@ module JSLint
 
       def copy_config_file
         raise ArgumentError, "Please set JSLint.config_path" if JSLint.config_path.nil?
-        xprint "Copying default config file to #{File.expand_path(JSLint.config_path)}... "
+        xprint "Creating example JSLint config file in #{File.expand_path(JSLint.config_path)}... "
         if File.exists?(JSLint.config_path)
           xputs "\n\nWarning: config file exists, so it won't be overwritten. " +
                 "You can copy it manually from the jslint_on_rails directory if you want to reset it."
         else
           FileUtils.copy(JSLint::DEFAULT_CONFIG_FILE, JSLint.config_path)
-          xputs "OK."
+          xputs "done."
         end
       end
 
