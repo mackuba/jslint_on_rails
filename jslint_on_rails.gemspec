@@ -13,5 +13,5 @@ Gem::Specification.new do |s|
   s.email = "jakub.suder@gmail.com"
 
   s.requirements = ['Java JRE (5.0 or later)']
-  s.files = ['MIT-LICENSE', 'README.markdown', 'Gemfile', 'Rakefile'] + Dir['lib/**/*'] + Dir['spec/**/*']
+  s.files = ['MIT-LICENSE', 'README.markdown', 'Gemfile*', 'Rakefile'] + Dir['lib/**/*'] + Dir['spec/**/*']
 end
