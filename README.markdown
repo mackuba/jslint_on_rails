@@ -1,9 +1,8 @@
 # JSLint on Rails
 
-**JSLint on Rails** is a Ruby gem and Rails plugin which lets you run
-the [JSLint JavaScript code checker](http://jslint.com) on your Javascript code easily.
-
-It can be installed either as a Rails plugin (the recommended method for Rails), or as a gem (for other frameworks).
+**JSLint on Rails** is a Ruby library which lets you run
+the [JSLint JavaScript code checker](https://github.com/douglascrockford/JSLint) on your Javascript code easily. It can
+be installed either as a gem (the recommended method), or as a Rails plugin (legacy method).
 
 Note: to run JSLint on Rails, you need to have **Java** available on your machine - it's required because JSLint is
 itself written in JavaScript, and is run using the [Rhino](http://www.mozilla.org/rhino) JavaScript engine (written in
@@ -15,25 +14,24 @@ Java). Any decent version of Java will do (and by decent I mean 5.0 or later).
 Latest version should be compatible with Ruby 1.9 and Rails 3 (and also with Ruby 1.8 and Rails 2, of course).
 
 
-## Installation (Rails)
+## Installation (as gem)
 
-If you use Rails, you can install the library as a plugin - it's less work to set it up this way.
-To install the plugin, use this command:
+The recommended installation method (for Rails and for other frameworks) is to install JSLint on Rails as a gem. The
+advantage is that it's easier to update the library to newer versions later, and you keep its code separate from your
+own code.
 
-    ./script/plugin install git://github.com/psionides/jslint_on_rails.git
+To use JSLint as a gem in Rails 3, you just need to do one thing:
 
-This will create for you a sample `jslint.yml` config file in your config directory.
+* add `gem 'jslint_on_rails'` to bundler's Gemfile
 
+And that's it. On first run, JSLint on Rails will create an example config file for you in config/jslint.yml, which
+you can then tweak to suit your app.
 
-## Installation (other frameworks)
+In Rails 2 and in other frameworks JSLint on Rails can't be loaded automatically using a Railtie, so you have to do a
+bit more work. The procedure in this case is:
 
-If you use Merb or some other framework, you need to install JSLint as a Ruby gem (you can do that in Rails too - the
-advantage of this method is that it may be easier to update to newer versions later).
-
-To use JSLint as a gem, follow these steps:
-
-* install the gem in your application using whatever technique is recommended for your framework (e.g. using gem
-bundler, or just plain old `gem install jslint_on_rails`)
+* install the gem in your application using whatever technique is recommended for your framework (e.g. using bundler,
+or just plain old `gem install jslint_on_rails`)
 * in your Rakefile, add a line to load the JSLint tasks:
 
         require 'jslint/tasks'
@@ -46,6 +44,17 @@ file to be kept - for example:
 * run a rake task which will generate a sample config file for you:
 
         rake jslint:copy_config
+
+
+## Installation (as Rails plugin)
+
+Installing libraries as Rails plugins was popular before Rails 3, but now gems with Railties can do everything that
+plugins could do, so plugins are getting less and less popular. But if you want to install JSLint on Rails as a plugin
+anyway, here's how you do it:
+
+    ./script/plugin install git://github.com/psionides/jslint_on_rails.git
+
+This will also create a sample `jslint.yml` config file for you in your config directory.
 
 
 ## Installation (custom)
@@ -79,7 +88,7 @@ but what's reasonable for me may not be reasonable for you
 
 To start the check, run the rake task:
 
-    rake jslint
+    [bundle exec] rake jslint
 
 You will get a result like this (if everything goes well):
 
@@ -134,10 +143,14 @@ Here's a documentation for all the extra options:
 ### lastsemic
 
 If set to true, this will ignore warnings about missing semicolon after a statement, if the statement is the last one in
-a block or function. I've added this because I like to omit the semicolon in one-liner anonymous functions, in
-situations like this:
+a block or function, and the whole block is on the same line. I've added this because I like to omit the semicolon in
+one-liner anonymous functions, in situations like this:
 
     var ids = $$('.entry').map(function(e) { return e.id });
+
+Note: in versions up to 1.0.3, this option also disabled the warning in blocks that span multiple lines, but I've
+changed that in 1.0.4, because removing a last semicolon in a multi-line block doesn't really affect the readability
+(while removing the only semicolon in a one-liner like above does, IMHO).
 
 
 ### newstat
