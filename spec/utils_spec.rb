@@ -97,14 +97,14 @@ describe JSLint::Utils do
 
     it "should copy default config to config_path" do
       JSLint.config_path = "newfile.yml"
-      File.should_receive(:copy).with(JSLint::DEFAULT_CONFIG_FILE, "newfile.yml")
+      FileUtils.should_receive(:copy).with(JSLint::DEFAULT_CONFIG_FILE, "newfile.yml")
       JSLint::Utils.copy_config_file
     end
 
     it "should not overwrite the file if it exists" do
       JSLint.config_path = "newfile2.yml"
       File.open("newfile2.yml", "w") { |f| f.write("qwe") }
-      File.should_not_receive(:copy)
+      FileUtils.should_not_receive(:copy)
       JSLint::Utils.copy_config_file
     end
   end
