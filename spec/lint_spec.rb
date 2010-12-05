@@ -141,6 +141,15 @@ describe JSLint::Lint do
         file_list(lint).should == [@files[0], @files[2]]
       end.should_not raise_error
     end
+
+    it "should ignore empty files" do
+      File.open("test/empty.js", "w") { |f| f.write("") }
+      File.open("test/full.js", "w") { |f| f.write("qqq") }
+
+      lint = JSLint::Lint.new :paths => ['test/*.js']
+      file_list(lint).should_not include(File.expand_path("test/empty.js"))
+      file_list(lint).should include(File.expand_path("test/full.js"))
+    end
   end
 
 end
