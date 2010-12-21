@@ -34,7 +34,7 @@ module JSLint
     def run
       check_java
       Utils.xputs "Running JSLint:\n\n"
-      arguments = "#{JSLINT_FILE} #{option_string} #{@file_list.join(' ')}"
+      arguments = "#{JSLINT_FILE} #{option_string.inspect} #{@file_list.join(' ')}"
       success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments)
       raise LintCheckFailure, "JSLint test failed." unless success
     end
@@ -51,7 +51,7 @@ module JSLint
     end
 
     def option_string
-      @config.map { |k, v| "#{k}=#{v.inspect}" }.join(',')
+      @config.map { |k, v| "#{k}=#{v.inspect}" }.join('&')
     end
 
     def check_java

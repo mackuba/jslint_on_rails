@@ -70,7 +70,7 @@ describe JSLint::Lint do
     end.should_not raise_error(JSLint::NoJavaException)
   end
 
-  it "should pass comma-separated option string to JSLint" do
+  it "should pass an ampersand-separated option string to JSLint" do
     lint = JSLint::Lint.new
     lint.instance_variable_set("@config", { 'debug' => true, 'semicolons' => false, 'linelength' => 120 })
     setup_java(lint)
@@ -81,9 +81,9 @@ describe JSLint::Lint do
       with(an_instance_of(String), an_instance_of(String), an_instance_of(String)).
       and_return { |a, b, c| param_string = c; true }
     lint.run
-    param_string.should =~ /semicolons=false/
-    param_string.should =~ /linelength=120/
-    param_string.should =~ /debug=true/
+
+    option_string = param_string.split(/\s+/).detect { |p| p =~ /linelength/ }
+    eval(option_string).split('&').sort.should == ['debug=true', 'linelength=120', 'semicolons=false']
   end
 
   it "should pass space-separated list of files to JSLint" do
