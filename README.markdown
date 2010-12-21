@@ -31,7 +31,7 @@ In Rails 2 and in other frameworks JSLint on Rails can't be loaded automatically
 bit more work. The procedure in this case is:
 
 * install the gem in your application using whatever technique is recommended for your framework (e.g. using bundler,
-or just plain old `gem install jslint_on_rails`)
+or by installing the gem manually with `gem install jslint_on_rails` and loading it with `require 'jslint'`)
 * in your Rakefile, add a line to load the JSLint tasks:
 
         require 'jslint/tasks'
