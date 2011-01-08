@@ -1,3 +1,8 @@
+Version 1.0.5 (08.01.2011)
+
+* options passed on the command line to JSLint are joined with "&" to fix the "predef" option
+* load YAJL module explicitly (in some environments it may not be loaded automatically)
+
 Version 1.0.4 (05.12.2010)
 
 * bundler should be able to load the gem without :require
