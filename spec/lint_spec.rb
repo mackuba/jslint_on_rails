@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe JSLint::Lint do
 
+  JSLint::Lint.class_eval do
+    attr_reader :config, :file_list
+  end
+
   before :all do
     File.open(JSLint::DEFAULT_CONFIG_FILE, "w") { |f| f.write "color: red\nsize: 5\nshape: circle\n" }
     File.open("custom_config.yml", "w") { |f| f.write "color: blue\nsize: 7\nborder: 2\n" }
@@ -13,20 +17,14 @@ describe JSLint::Lint do
     lint.should_receive(:call_java_with_output).once.and_return("OK")
   end
 
-  def file_list(lint)
-    lint.instance_variable_get("@file_list")
-  end
-
   it "should merge default config with custom config from JSLint.config_path" do
     lint = JSLint::Lint.new
-    config = lint.instance_variable_get("@config")
-    config.should == { 'color' => 'blue', 'size' => 7, 'border' => 2, 'shape' => 'circle' }
+    lint.config.should == { 'color' => 'blue', 'size' => 7, 'border' => 2, 'shape' => 'circle' }
   end
 
   it "should merge default config with custom config given in argument, if available" do
     lint = JSLint::Lint.new :config_path => 'other_config.yml'
-    config = lint.instance_variable_get("@config")
-    config.should == { 'color' => 'green', 'border' => 0, 'shape' => 'square', 'size' => 5 }
+    lint.config.should == { 'color' => 'green', 'border' => 0, 'shape' => 'square', 'size' => 5 }
   end
 
   it "should not pass paths and exclude_paths options to real JSLint" do
@@ -34,10 +32,9 @@ describe JSLint::Lint do
       f.write(YAML.dump({ 'paths' => ['a', 'b'], 'exclude_paths' => ['c'], 'debug' => 'true' }))
     end
     lint = JSLint::Lint.new :config_path => 'test.yml'
-    config = lint.instance_variable_get("@config")
-    config['debug'].should == 'true'
-    config['paths'].should be_nil
-    config['exclude_paths'].should be_nil
+    lint.config['debug'].should == 'true'
+    lint.config['paths'].should be_nil
+    lint.config['exclude_paths'].should be_nil
   end
 
   it "should fail if Java isn't available" do
@@ -112,33 +109,33 @@ describe JSLint::Lint do
 
     it "should calculate a list of files to test" do
       lint = JSLint::Lint.new :paths => ['test/**/*.js']
-      file_list(lint).should == @files
+      lint.file_list.should == @files
 
       lint = JSLint::Lint.new :paths => ['test/a*.js', 'test/**/*r*.js']
-      file_list(lint).should == [@files[0], @files[3], @files[4]]
+      lint.file_list.should == [@files[0], @files[3], @files[4]]
 
       lint = JSLint::Lint.new :paths => ['test/a*.js', 'test/**/*r*.js'], :exclude_paths => ['**/*q*.js']
-      file_list(lint).should == [@files[0], @files[4]]
+      lint.file_list.should == [@files[0], @files[4]]
 
       lint = JSLint::Lint.new :paths => ['test/**/*.js'], :exclude_paths => ['**/*.js']
-      file_list(lint).should == []
+      lint.file_list.should == []
 
       lint = JSLint::Lint.new :paths => ['test/**/*.js', 'test/**/a*.js', 'test/**/p*.js']
-      file_list(lint).should == @files
+      lint.file_list.should == @files
 
       File.open("new.yml", "w") { |f| f.write(YAML.dump({ 'paths' => ['test/vendor/*.js'] })) }
 
       lint = JSLint::Lint.new :config_path => 'new.yml', :exclude_paths => ['**/proto.js']
-      file_list(lint).should == [@files[3]]
+      lint.file_list.should == [@files[3]]
 
       lint = JSLint::Lint.new :config_path => 'new.yml', :paths => ['test/l*.js']
-      file_list(lint).should == [@files[1]]
+      lint.file_list.should == [@files[1]]
     end
 
     it "should accept :paths and :exclude_paths as string instead of one-element array" do
       lambda do
         lint = JSLint::Lint.new :paths => 'test/*.js', :exclude_paths => 'test/lib.js'
-        file_list(lint).should == [@files[0], @files[2]]
+        lint.file_list.should == [@files[0], @files[2]]
       end.should_not raise_error
     end
 
@@ -147,8 +144,8 @@ describe JSLint::Lint do
       File.open("test/full.js", "w") { |f| f.write("qqq") }
 
       lint = JSLint::Lint.new :paths => ['test/*.js']
-      file_list(lint).should_not include(File.expand_path("test/empty.js"))
-      file_list(lint).should include(File.expand_path("test/full.js"))
+      lint.file_list.should_not include(File.expand_path("test/empty.js"))
+      lint.file_list.should include(File.expand_path("test/full.js"))
     end
   end
 
