@@ -23,6 +23,10 @@ module JSLint
       custom_config = Utils.load_config_file(options[:config_path] || JSLint.config_path)
       @config = default_config.merge(custom_config)
 
+      if @config['predef'].is_a?(Array)
+        @config['predef'] = @config['predef'].join(",")
+      end
+
       included_files = files_matching_paths(options, :paths)
       excluded_files = files_matching_paths(options, :exclude_paths)
       @file_list = Utils.exclude_files(included_files, excluded_files)
