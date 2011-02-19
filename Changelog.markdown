@@ -1,3 +1,8 @@
+Version 1.0.6 (19.02.2011)
+
+* escape $ in predef line to prevent Bash for interpreting it
+* predef can be passed as a YAML array
+
 Version 1.0.5 (08.01.2011)
 
 * options passed on the command line to JSLint are joined with "&" to fix the "predef" option
