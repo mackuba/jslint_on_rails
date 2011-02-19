@@ -27,6 +27,20 @@ describe JSLint::Lint do
     lint.config.should == { 'color' => 'green', 'border' => 0, 'shape' => 'square', 'size' => 5 }
   end
 
+  it "should convert predef to string if it's an array" do
+    File.open("predef.yml", "w") { |f| f.write "predef:\n  - a\n  - b\n  - c" }
+
+    lint = JSLint::Lint.new :config_path => 'predef.yml'
+    lint.config['predef'].should == "a,b,c"
+  end
+
+  it "should accept predef as string" do
+    File.open("predef.yml", "w") { |f| f.write "predef: d,e,f" }
+
+    lint = JSLint::Lint.new :config_path => 'predef.yml'
+    lint.config['predef'].should == "d,e,f"
+  end
+
   it "should not pass paths and exclude_paths options to real JSLint" do
     File.open("test.yml", "w") do |f|
       f.write(YAML.dump({ 'paths' => ['a', 'b'], 'exclude_paths' => ['c'], 'debug' => 'true' }))
@@ -81,6 +95,19 @@ describe JSLint::Lint do
 
     option_string = param_string.split(/\s+/).detect { |p| p =~ /linelength/ }
     eval(option_string).split('&').sort.should == ['debug=true', 'linelength=120', 'semicolons=false']
+  end
+
+  it "should escape $ in option string when passing it to Java/JSLint" do
+    lint = JSLint::Lint.new
+    lint.instance_variable_set("@config", { 'predef' => 'window,$,Ajax,$app,Request' })
+    setup_java(lint)
+    param_string = ""
+    lint.
+      should_receive(:call_java_with_status).
+      once.
+      with(an_instance_of(String), an_instance_of(String), /window,\\\$,Ajax,\\\$app,Request/).
+      and_return(true)
+    lint.run
   end
 
   it "should pass space-separated list of files to JSLint" do
