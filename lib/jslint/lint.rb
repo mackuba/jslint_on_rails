@@ -11,6 +11,7 @@ module JSLint
   RHINO_JAR_CLASS = "org.mozilla.javascript.tools.shell.Main"
 
   JSLINT_FILE = File.expand_path("#{PATH}/vendor/jslint.js")
+  JSHINT_FILE = File.expand_path("#{PATH}/vendor/jshint.js")
 
   class Lint
 
@@ -22,6 +23,14 @@ module JSLint
       default_config = Utils.load_config_file(DEFAULT_CONFIG_FILE)
       custom_config = Utils.load_config_file(options[:config_path] || JSLint.config_path)
       @config = default_config.merge(custom_config)
+      @linter_file, @linter_name = case options[:linter]
+                                   when :jslint
+                                     [JSLINT_FILE, "JSLint"]
+                                   when :jshint
+                                     [JSHINT_FILE, "JSHint"]
+                                   else
+                                     [JSLINT_FILE, "JSLint"]
+                                   end
 
       if @config['predef'].is_a?(Array)
         @config['predef'] = @config['predef'].join(",")
@@ -37,10 +46,10 @@ module JSLint
 
     def run
       check_java
-      Utils.xputs "Running JSLint:\n\n"
-      arguments = "#{JSLINT_FILE} #{option_string.inspect.gsub(/\$/, "\\$")} #{@file_list.join(' ')}"
+      Utils.xputs "Running #{@linter_name}:\n\n"
+      arguments = "#{@linter_file} #{option_string.inspect.gsub(/\$/, "\\$")} #{@file_list.join(' ')}"
       success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments)
-      raise LintCheckFailure, "JSLint test failed." unless success
+      raise LintCheckFailure, "#{@linter_name} test failed." unless success
     end
 
 
@@ -77,5 +86,4 @@ module JSLint
     end
 
   end
-
 end
