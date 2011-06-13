@@ -4,14 +4,14 @@ require 'jslint/utils'
 desc "Run JSLint check on selected Javascript files"
 task :jslint do
   include_paths, exclude_paths = lint_options
-  lint = JSLint::Lint.new :paths => include_paths, :exclude_paths => exclude_paths
+  lint = JSLint::Lint.new :lint_engine => :jslint, :paths => include_paths, :exclude_paths => exclude_paths
   lint.run
 end
 
 desc "Run JSHint check on selected Javascript files"
 task :jshint do
   include_paths, exclude_paths = lint_options
-  lint = JSLint::Lint.new :linter => :jshint, :paths => include_paths, :exclude_paths => exclude_paths
+  lint = JSLint::Lint.new :lint_engine => :jshint, :paths => include_paths, :exclude_paths => exclude_paths
   lint.run
 end
 

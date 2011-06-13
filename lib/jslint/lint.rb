@@ -17,6 +17,7 @@ module JSLint
   class Lint
 
     # available options:
+    # :lint_engine => jslint || jshint (default = jshint)
     # :paths => [list of paths...]
     # :exclude_paths => [list of exluded paths...]
     # :config_path => path to custom config file (can be set via JSLint.config_path too)
@@ -24,14 +25,14 @@ module JSLint
       default_config = Utils.load_config_file(DEFAULT_CONFIG_FILE)
       custom_config = Utils.load_config_file(options[:config_path] || JSLint.config_path)
       @config = default_config.merge(custom_config)
-      @linter_file, @linter_name = case options[:linter]
-                                   when :jslint
-                                     [JSLINT_FILE, "JSLint"]
-                                   when :jshint
-                                     [JSHINT_FILE, "JSHint"]
-                                   else
-                                     [JSLINT_FILE, "JSLint"]
-                                   end
+
+      if options[:lint_engine].to_s == 'jslint'
+        @lint_engine_file = JSLINT_FILE
+        @lint_engine_name = "JSLint"
+      else
+        @lint_engine_file = JSHINT_FILE
+        @lint_engine_name = "JSHint"
+      end
 
       if @config['predef'].is_a?(Array)
         @config['predef'] = @config['predef'].join(",")
@@ -47,11 +48,11 @@ module JSLint
 
     def run
       check_java
-      Utils.xputs "Running #{@linter_name}:\n\n"
+      Utils.xputs "Running #{@lint_engine_name}:\n\n"
       encoded_options = option_string.inspect.gsub(/\$/, "\\$")
-      arguments = ["-f", @linter_file, RHINO_RUNNER_FILE, encoded_options, *@file_list]
+      arguments = ["-f", @lint_engine_file, RHINO_RUNNER_FILE, encoded_options, *@file_list]
       success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments.join(' '))
-      raise LintCheckFailure, "#{@linter_name} test failed." unless success
+      raise LintCheckFailure, "#{@lint_engine_name} test failed." unless success
     end
 
 
