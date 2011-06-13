@@ -7,6 +7,7 @@ module JSLint
 
   TEST_JAR_FILE = File.expand_path("#{PATH}/vendor/test.jar")
   RHINO_JAR_FILE = File.expand_path("#{PATH}/vendor/rhino.jar")
+  RHINO_RUNNER_FILE = File.expand_path("#{PATH}/vendor/rhino.js")
   TEST_JAR_CLASS = "Test"
   RHINO_JAR_CLASS = "org.mozilla.javascript.tools.shell.Main"
 
@@ -47,8 +48,9 @@ module JSLint
     def run
       check_java
       Utils.xputs "Running #{@linter_name}:\n\n"
-      arguments = "#{@linter_file} #{option_string.inspect.gsub(/\$/, "\\$")} #{@file_list.join(' ')}"
-      success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments)
+      encoded_options = option_string.inspect.gsub(/\$/, "\\$")
+      arguments = ["-f", @linter_file, RHINO_RUNNER_FILE, encoded_options, *@file_list]
+      success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments.join(' '))
       raise LintCheckFailure, "#{@linter_name} test failed." unless success
     end
 
