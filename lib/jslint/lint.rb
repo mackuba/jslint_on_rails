@@ -23,7 +23,7 @@ module JSLint
     # :config_path => path to custom config file (can be set via JSLint.config_path too)
     def initialize(options = {})
       default_config = Utils.load_config_file(DEFAULT_CONFIG_FILE)
-      custom_config = Utils.load_config_file(options[:config_path] || JSLint.config_path)
+      custom_config = Utils.load_config_file(options[:config_path] || JSLint.config_path) || {}
       @config = default_config.merge(custom_config)
 
       if options[:lint_engine].to_s == 'jslint'

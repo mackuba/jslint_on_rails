@@ -10,6 +10,7 @@ describe JSLint::Lint do
     File.open(JSLint::DEFAULT_CONFIG_FILE, "w") { |f| f.write "color: red\nsize: 5\nshape: circle\n" }
     File.open("custom_config.yml", "w") { |f| f.write "color: blue\nsize: 7\nborder: 2\n" }
     File.open("other_config.yml", "w") { |f| f.write "color: green\nborder: 0\nshape: square" }
+    File.open("empty_config.yml", "w") { |f| f.write "# nothing interesting here, move along\n" }
     JSLint.config_path = "custom_config.yml"
   end
 
@@ -25,6 +26,11 @@ describe JSLint::Lint do
   it "should merge default config with custom config given in argument, if available" do
     lint = JSLint::Lint.new :config_path => 'other_config.yml'
     lint.config.should == { 'color' => 'green', 'border' => 0, 'shape' => 'square', 'size' => 5 }
+  end
+
+  it "should ignore custom config file if it's empty" do
+    expect { @lint = JSLint::Lint.new :config_path => 'empty_config.yml' }.to_not(raise_error)
+    @lint.config.should == { 'color' => 'red', 'shape' => 'circle', 'size' => 5 }
   end
 
   it "should convert predef to string if it's an array" do
