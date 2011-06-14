@@ -10,6 +10,7 @@ paths:
   - public/javascripts/**/*.js
 
 exclude_paths:
+  - public/javascripts/vendor/**/*.js
 
 # ------------ common options for both jslint and jshint ------------
 # enforcing options (true means potentially more warnings)
