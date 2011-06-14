@@ -34,6 +34,8 @@ module JSLint
         @lint_engine_name = "JSHint"
       end
 
+      handle_legacy_options if options[:lint_engine].nil?
+
       if @config['predef'].is_a?(Array)
         @config['predef'] = @config['predef'].join(",")
       end
@@ -86,6 +88,18 @@ module JSLint
       path_list = [path_list] unless path_list.is_a?(Array)
       file_list = path_list.map { |p| Dir[p] }.flatten
       Utils.unique_files(file_list)
+    end
+
+    def handle_legacy_options
+      if @config[:windows]
+        @config[:wsh] = true
+      end
+      if @config[:newstat]
+        @config[:nonew] = false
+      end
+      if @config[:statinexp]
+        @config[:expr] = true
+      end
     end
 
   end
