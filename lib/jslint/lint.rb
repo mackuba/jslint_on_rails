@@ -26,7 +26,9 @@ module JSLint
       custom_config = Utils.load_config_file(options[:config_path] || JSLint.config_path) || {}
       @config = default_config.merge(custom_config)
 
-      if options[:lint_engine].to_s == 'jslint'
+      lint_engine = (options[:lint_engine] || @config['lint_engine']).to_s
+
+      if lint_engine == 'jslint'
         @lint_engine_file = JSLINT_FILE
         @lint_engine_name = "JSLint"
       else

@@ -1,4 +1,8 @@
 # ------------ rake task options ------------
+# lint engine - choose 'jshint' or 'jslint'
+# JSLint is more strict, JSHint is more indulgent and has more options
+
+lint_engine: jshint
 
 # JS files to check by default, if no parameters are passed to 'rake jslint'
 # (you may want to limit this only to your own scripts and exclude any external scripts and frameworks)
