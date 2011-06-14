@@ -26,7 +26,7 @@ white:    false     # true if strict whitespace rules apply (see also 'indent' o
 # relaxing options (false means potentially more warnings)
 
 debug:    false     # true if debugger statements should be allowed (set to false before going into production)
-es5:      false     # true if ECMAScript 5 syntax should be allowed
+es5:      true      # true if ECMAScript 5 syntax should be allowed
 evil:     false     # true if eval should be allowed
 forin:    true      # true if unfiltered 'for in' statements should be allowed
 sub:      false     # true if subscript notation may be used for expressions better expressed in dot notation
