@@ -31,7 +31,7 @@ module JSLint
       included_files += haml_files_with_javascript(options, :haml_paths)
 
       #debug
-      pp included_files
+      raise included_files.inspect
 
       excluded_files = files_matching_paths(options, :exclude_paths)
       @file_list = Utils.exclude_files(included_files, excluded_files)
