@@ -28,6 +28,11 @@ module JSLint
       end
 
       included_files = files_matching_paths(options, :paths)
+      included_files += haml_files_with_javascript(options, :haml_paths)
+
+      #debug
+      pp included_files
+
       excluded_files = files_matching_paths(options, :exclude_paths)
       @file_list = Utils.exclude_files(included_files, excluded_files)
       @file_list.delete_if { |f| File.size(f) == 0 }
@@ -39,7 +44,6 @@ module JSLint
       check_java
       Utils.xputs "Running JSLint:\n\n"
       arguments = "#{JSLINT_FILE} #{option_string.inspect.gsub(/\$/, "\\$")} #{@file_list.join(' ')}"
-      raise arguments.inspect
       success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments)
       raise LintCheckFailure, "JSLint test failed." unless success
     end
@@ -75,6 +79,24 @@ module JSLint
       path_list = [path_list] unless path_list.is_a?(Array)
       file_list = path_list.map { |p| Dir[p] }.flatten
       Utils.unique_files(file_list)
+    end
+
+    def haml_files_with_javascript(options, field)
+      files = files_matching_paths(options, field)
+      return flies if files.empty?
+
+      parser = RubyParser.new
+      files.each do |file|
+        #got the files. now check to see if they have :javascript tags
+        file = File.new(files, 'r')
+
+        javascript_regexp = Regexp.new(/:javascript/i)
+        while l = file.gets do
+          files << file if javascript_regexp.match l
+        end
+      end
+
+      files
     end
 
   end

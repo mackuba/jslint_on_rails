@@ -43,6 +43,11 @@ module JSLint
         list.reject { |entry| excluded.any? { |f| File.identical?(f, entry) }}
       end
 
+      #workaround for pulling :javascript sections out of haml files and temp storing them so we can run jslint on the javascript
+      def extract_and_store_haml_javascript(list)
+
+      end
+
       def paths_from_command_line(field)
         argument = ENV[field] || ENV[field.upcase]
         argument && argument.split(/,/)
