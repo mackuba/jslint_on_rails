@@ -39,6 +39,7 @@ module JSLint
       check_java
       Utils.xputs "Running JSLint:\n\n"
       arguments = "#{JSLINT_FILE} #{option_string.inspect.gsub(/\$/, "\\$")} #{@file_list.join(' ')}"
+      raise arguments.inspect
       success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments)
       raise LintCheckFailure, "JSLint test failed." unless success
     end
