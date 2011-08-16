@@ -1,0 +1,44 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    chronic (0.6.2)
+    diff-lcs (1.1.2)
+    fakefs (0.3.2)
+    flay (1.4.3)
+      ruby_parser (~> 2.0)
+      sexp_processor (~> 3.0)
+    flog (2.2.0)
+      ruby_parser (~> 2.0)
+      sexp_processor (~> 3.0)
+    map_by_method (0.8.3)
+    metric_fu (1.2.0)
+      chronic (>= 0.2.3)
+      flay (>= 1.2.1)
+      flog (= 2.2.0)
+      rcov (>= 0.8.3.3)
+    rake (0.9.2)
+    rcov (0.9.10)
+    rspec (2.6.0)
+      rspec-core (~> 2.6.0)
+      rspec-expectations (~> 2.6.0)
+      rspec-mocks (~> 2.6.0)
+    rspec-core (2.6.4)
+    rspec-expectations (2.6.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.6.0)
+    ruby_parser (2.1.0)
+      sexp_processor (~> 3.0)
+    sexp_processor (3.0.5)
+    what_methods (1.0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  fakefs
+  map_by_method
+  metric_fu
+  rake
+  rspec
+  ruby_parser
+  what_methods
