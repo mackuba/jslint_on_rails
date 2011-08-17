@@ -40,7 +40,6 @@ module JSLint
     def run
       check_java
       Utils.xputs "Running JSLint:\n\n"
-      pp @file_list
       arguments = "#{JSLINT_FILE} #{option_string.inspect.gsub(/\$/, "\\$")} #{@file_list.join(' ')}"
       success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments)
       raise LintCheckFailure, "JSLint test failed." unless success
@@ -75,6 +74,7 @@ module JSLint
     def files_matching_paths(options, field)
       path_list = options[field] || @config[field.to_s] || []
       path_list = [path_list] unless path_list.is_a?(Array)
+      puts "path_list #{path_list.inspect}"
       file_list = path_list.map { |p| Dir[p] }.flatten
       Utils.unique_files(file_list)
     end
