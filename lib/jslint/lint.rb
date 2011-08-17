@@ -114,6 +114,7 @@ module JSLint
         FileUtils.mkdir_p(dir_path)
 
         s = IO.read(file).split(':javascript').last
+        puts s
         File.new(tmp_file_handle, "w"){ |f| f.write(s)}
 
       end
