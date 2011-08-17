@@ -116,6 +116,7 @@ module JSLint
         s = IO.read(file).split(':javascript').last
         out =  File.open(tmp_file_handle, "w")
         s.split('\n').each do |line|
+          next if line =~ /\s+\//i
           out.puts line
         end
         out.close
