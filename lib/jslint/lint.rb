@@ -75,8 +75,6 @@ module JSLint
       path_list = options[field] || @config[field.to_s] || []
       path_list = [path_list] unless path_list.is_a?(Array)
       puts "path_list for #{field}::#{path_list.inspect}"
-      require 'ruby-debug'
-      debugger
 
       file_list = path_list.map { |p| Dir[p] }.flatten
       puts "file list for #{field}"
