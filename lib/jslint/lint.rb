@@ -103,7 +103,7 @@ module JSLint
       javascript_pull = Regexp.new(/:javascript(.*)/i)
 
       javascript_haml_files.each do |file|
-        tmp_file_handle = "tmp/jslint/#{file}"
+        tmp_file_handle = "tmp/jslint/#{file}.js"
         tmp_javascript_files << tmp_file_handle
 
         dir_path = tmp_file_handle.split('/')
