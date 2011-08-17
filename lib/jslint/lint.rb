@@ -85,11 +85,9 @@ module JSLint
     def haml_files_with_javascript(options, field)
       matching_files = files_matching_paths(options, field) || []
       return matching_files if matching_files.empty?
-      return matching_files
 
       javascript_haml_files = []
 
-=begin
       parser = RubyParser.new
       files.each do |file|
         #got the files. now check to see if they have :javascript tags
@@ -103,7 +101,6 @@ module JSLint
           end
         end
       end
-=end
 
       return javascript_haml_files
     end
