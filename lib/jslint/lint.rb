@@ -102,11 +102,12 @@ module JSLint
 
       tmp_javascript_files = []
       javascript_haml_files.each do |file|
-        tmp_file_handle = "tmp/#{file}"
+        tmp_file_handle = "tmp/jslint/#{file}"
         tmp_javascript_files << tmp_file_handle
         dir_path = tmp_file_handle.split('/')
         dir_path = dir_path[0..dir_path.size-1].join('/')
 
+        puts "delete #{tmp_file_handle} file? #{File.exists?(tmp_file_handle)}"
         File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
         Dir.mkdir(dir_path)
         tmp_file = File.new(tmp_file_handle, "w+")
