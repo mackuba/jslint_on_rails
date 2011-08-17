@@ -34,7 +34,7 @@ module JSLint
       @file_list = Utils.exclude_files(included_files, excluded_files)
       @file_list.delete_if { |f| File.size(f) == 0 }
 
-      ['paths', 'exclude_paths'].each { |field| @config.delete(field) }
+      ['paths', 'exclude_paths', 'haml_paths'].each { |field| @config.delete(field) }
     end
 
     def run
