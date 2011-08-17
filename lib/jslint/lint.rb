@@ -93,10 +93,11 @@ module JSLint
         while l = process_file.gets do
           if l =~ /:javascript/i
             javascript_haml_files << file
-            process_file.close
             next
           end
         end
+
+        process_file.close
       end
 
       #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
