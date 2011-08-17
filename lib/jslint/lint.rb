@@ -94,6 +94,7 @@ module JSLint
           if l =~ /:javascript/i
             javascript_haml_files << file
             process_file.close
+            next
           end
         end
 
