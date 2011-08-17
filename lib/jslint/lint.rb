@@ -88,7 +88,7 @@ module JSLint
 
       javascript_haml_files = []
 
-      files.each do |file|
+      matching_files.each do |file|
         #got the files. now check to see if they have :javascript tags
         file = File.new(file, 'r')
 
