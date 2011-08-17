@@ -29,6 +29,7 @@ module JSLint
 
       included_files = files_matching_paths(options, :paths)
       included_files += haml_files_with_javascript(options, :haml_paths)
+      pp included_files
 
       excluded_files = files_matching_paths(options, :exclude_paths)
       @file_list = Utils.exclude_files(included_files, excluded_files)
@@ -121,7 +122,6 @@ module JSLint
       end
       #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
 
-      pp tmp_javascript_files
       return tmp_javascript_files
     end
   end
