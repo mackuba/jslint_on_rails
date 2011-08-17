@@ -74,11 +74,8 @@ module JSLint
     def files_matching_paths(options, field)
       path_list = options[field] || @config[field.to_s] || []
       path_list = [path_list] unless path_list.is_a?(Array)
-      puts "path_list for #{field}::#{path_list.inspect}"
 
       file_list = path_list.map { |p| Dir[p] }.flatten
-      puts "file list for #{field}"
-      pp file_list
       Utils.unique_files(file_list)
     end
 
@@ -87,19 +84,23 @@ module JSLint
       return matching_files if matching_files.empty?
 
       javascript_haml_files = []
+      javascript_pull = Regexp.new(/:javascript(.*)/i)
 
       matching_files.each do |file|
         #got the files. now check to see if they have :javascript tags
         process_file = File.new(file, 'r')
 
         while l = process_file.gets do
-          puts "gets::#{l}"
           if l =~ /:javascript/i
-            puts "Matched that mother"
             javascript_haml_files << file
+            process_file.close
           end
         end
+
+        process_file.close
       end
+
+      #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
 
       return javascript_haml_files
     end
