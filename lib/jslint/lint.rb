@@ -88,6 +88,7 @@ module JSLint
       files = files_matching_paths(options, field)
       return flies if files.empty?
 
+      puts "files was not empty"
       javascript_haml_files = []
 
 =begin
