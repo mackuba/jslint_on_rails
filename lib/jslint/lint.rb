@@ -114,10 +114,12 @@ module JSLint
         FileUtils.mkdir_p(dir_path)
 
         s = IO.read(file).split(':javascript').last
-        File.open(tmp_file_handle, "w"){ |f| f.write(s)}
+        out =  File.open(tmp_file_handle, "w")
+        s.split('\n').each do |line|
+          out.puts line
+        end
 
       end
-      #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
 
       return tmp_javascript_files
     end
