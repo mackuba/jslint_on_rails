@@ -92,9 +92,8 @@ module JSLint
         #got the files. now check to see if they have :javascript tags
         file = File.new(file, 'r')
 
-        javascript_regexp = Regexp.new(/:javascript/i)
         while l = file.gets do
-          if javascript_regexp.match l
+          if l =~ /:javascript/i
             javascript_haml_files << file
             next
           end
