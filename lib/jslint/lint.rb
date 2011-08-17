@@ -30,9 +30,6 @@ module JSLint
       included_files = files_matching_paths(options, :paths)
       included_files += haml_files_with_javascript(options, :haml_paths)
 
-      #debug
-      raise included_files.inspect
-
       excluded_files = files_matching_paths(options, :exclude_paths)
       @file_list = Utils.exclude_files(included_files, excluded_files)
       @file_list.delete_if { |f| File.size(f) == 0 }
@@ -43,6 +40,7 @@ module JSLint
     def run
       check_java
       Utils.xputs "Running JSLint:\n\n"
+      pp @file_list
       arguments = "#{JSLINT_FILE} #{option_string.inspect.gsub(/\$/, "\\$")} #{@file_list.join(' ')}"
       success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments)
       raise LintCheckFailure, "JSLint test failed." unless success
