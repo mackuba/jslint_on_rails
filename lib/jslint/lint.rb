@@ -102,11 +102,15 @@ module JSLint
 
       tmp_javascript_files = []
       javascript_haml_files.each do |file|
-        tmp_javascript_files << "tmp/#{file}"
+        tmp_file_handle = "tmp/#{file}"
+        tmp_javascript_files << tmp_file_handle
+
+        File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
+        tmp_file = File.new(tmp_file_handle, "w+")
+
       end
       #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
-      
-      pp tmp_javascript_files
+
 
       return tmp_javascript_files
     end
