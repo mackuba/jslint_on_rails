@@ -84,7 +84,6 @@ module JSLint
     end
 
     def haml_files_with_javascript(options, field)
-      return []
       files = files_matching_paths(options, field)
       return flies if files.empty?
 
