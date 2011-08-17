@@ -97,8 +97,6 @@ module JSLint
             next
           end
         end
-
-        process_file.close
       end
 
       #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
