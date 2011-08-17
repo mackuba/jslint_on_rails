@@ -84,9 +84,12 @@ module JSLint
     end
 
     def haml_files_with_javascript(options, field)
-      files = []
+      return []
+=begin
       files = files_matching_paths(options, field)
       return flies if files.empty?
+
+      javascript_haml_files = []
 
       parser = RubyParser.new
       files.each do |file|
@@ -95,11 +98,12 @@ module JSLint
 
         javascript_regexp = Regexp.new(/:javascript/i)
         while l = file.gets do
-          files << file if javascript_regexp.match l
+          javascript_haml_files << file if javascript_regexp.match l
         end
       end
 
-      files
+      return javascript_haml_files
+=end
     end
 
   end
