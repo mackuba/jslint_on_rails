@@ -114,7 +114,7 @@ module JSLint
         File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
 
         puts "Making #{dir_path}"
-        Dir.mkdir(dir_path)
+        FileUtils.mkdir_p(dir_path)
 
         puts "Making new file"
         tmp_file = File.new(tmp_file_handle, "w")
