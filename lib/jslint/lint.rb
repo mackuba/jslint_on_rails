@@ -105,6 +105,7 @@ module JSLint
         tmp_file_handle = "tmp/jslint/#{file}"
         tmp_javascript_files << tmp_file_handle
         dir_path = tmp_file_handle.split('/')
+        puts dir_path.inspect
         dir_path.delete(dir_path.last)
 
         puts "delete #{tmp_file_handle} file? #{File.exists?(tmp_file_handle)}"
