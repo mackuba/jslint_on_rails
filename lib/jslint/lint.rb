@@ -1,6 +1,5 @@
 require 'jslint/errors'
 require 'jslint/utils'
-require 'ruby_parser'
 
 module JSLint
 
