@@ -29,7 +29,6 @@ module JSLint
 
       included_files = files_matching_paths(options, :paths)
       included_files += haml_files_with_javascript(options, :haml_paths)
-      pp included_files
 
       excluded_files = files_matching_paths(options, :exclude_paths)
       @file_list = Utils.exclude_files(included_files, excluded_files)
@@ -85,7 +84,6 @@ module JSLint
       return matching_files if matching_files.empty?
 
       javascript_haml_files = []
-      javascript_pull = Regexp.new(/:javascript(.*)/i)
 
       matching_files.each do |file|
         #got the files. now check to see if they have :javascript tags
@@ -102,6 +100,8 @@ module JSLint
       end
 
       tmp_javascript_files = []
+      javascript_pull = Regexp.new(/:javascript(.*)/i)
+
       javascript_haml_files.each do |file|
         tmp_file_handle = "tmp/jslint/#{file}"
         tmp_javascript_files << tmp_file_handle
@@ -110,15 +110,13 @@ module JSLint
         dir_path.delete(dir_path.last)
         dir_path = dir_path.join('/')
 
-
-        puts "delete #{tmp_file_handle} file? #{File.exists?(tmp_file_handle)}"
         File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
-
-        puts "Making #{dir_path}"
         FileUtils.mkdir_p(dir_path)
-
-        puts "Making new file"
         tmp_file = File.new(tmp_file_handle, "w")
+        s = IO.read(file)
+
+        pp s.match(javascript_pull)
+
       end
       #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
 
