@@ -28,11 +28,7 @@ module JSLint
       end
 
       included_files = files_matching_paths(options, :paths)
-      puts "first"
-      pp included_files
       included_files += haml_files_with_javascript(options, :haml_paths)
-      puts "second"
-      pp included_files
 
       excluded_files = files_matching_paths(options, :exclude_paths)
       @file_list = Utils.exclude_files(included_files, excluded_files)
