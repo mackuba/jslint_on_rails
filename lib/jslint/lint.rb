@@ -74,15 +74,14 @@ module JSLint
     def files_matching_paths(options, field)
       path_list = options[field] || @config[field.to_s] || []
       path_list = [path_list] unless path_list.is_a?(Array)
-      puts "path_list #{path_list.inspect}"
       file_list = path_list.map { |p| Dir[p] }.flatten
+      puts "file list for #{field}"
+      pp file_list
       Utils.unique_files(file_list)
     end
 
     def haml_files_with_javascript(options, field)
       matching_files = files_matching_paths(options, field) || []
-      puts "matchingfile::" + matching_files.join(',')
-      puts "options::#{options.inspect} field#{field.inspect}"
       return matching_files if matching_files.empty?
 
       javascript_haml_files = []
