@@ -93,7 +93,7 @@ module JSLint
         file = File.new(file, 'r')
 
         while l = file.gets do
-          puts "gets"
+          puts "gets::#{l}"
           if l =~ /:javascript/i
             puts "Matched that mother"
             javascript_haml_files << file
