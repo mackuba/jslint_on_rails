@@ -105,6 +105,8 @@ module JSLint
         tmp_javascript_files << "tmp/#{file}"
       end
       #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
+      
+      pp tmp_javascript_files
 
       return tmp_javascript_files
     end
