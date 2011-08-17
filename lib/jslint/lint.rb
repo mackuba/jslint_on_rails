@@ -86,7 +86,7 @@ module JSLint
       parser = RubyParser.new
       files.each do |file|
         #got the files. now check to see if they have :javascript tags
-        file = File.new(files, 'r')
+        file = File.new(file, 'r')
 
         javascript_regexp = Regexp.new(/:javascript/i)
         while l = file.gets do
