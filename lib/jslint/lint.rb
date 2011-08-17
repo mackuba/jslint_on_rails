@@ -99,11 +99,14 @@ module JSLint
 
         javascript_regexp = Regexp.new(/:javascript/i)
         while l = file.gets do
-          javascript_haml_files << file if javascript_regexp.match l
+          if javascript_regexp.match l
+            javascript_haml_files << file
+            next
+          end
         end
       end
-
 =end
+
       return javascript_haml_files
     end
 
