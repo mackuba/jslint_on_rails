@@ -113,10 +113,9 @@ module JSLint
         File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
         FileUtils.mkdir_p(dir_path)
         tmp_file = File.new(tmp_file_handle, "w")
-        s = IO.read(file)
+        s = IO.read(file).split(':javascript').last
 
-        pp s.match(javascript_pull)
-
+        pp s
       end
       #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
 
