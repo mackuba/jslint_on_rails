@@ -118,6 +118,7 @@ module JSLint
         s.split('\n').each do |line|
           out.puts line
         end
+        out.close
 
       end
 
