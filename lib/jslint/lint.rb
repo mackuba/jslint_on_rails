@@ -100,9 +100,13 @@ module JSLint
         process_file.close
       end
 
+      tmp_javascript_files = []
+      javascript_haml_files.each do |file|
+        tmp_javascript_files << "tmp/#{file}"
+      end
       #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
 
-      return javascript_haml_files
+      return tmp_javascript_files
     end
   end
 end
