@@ -104,8 +104,8 @@ module JSLint
       javascript_haml_files.each do |file|
         tmp_file_handle = "tmp/jslint/#{file}"
         tmp_javascript_files << tmp_file_handle
+
         dir_path = tmp_file_handle.split('/')
-        puts dir_path.inspect
         dir_path.delete(dir_path.last)
         dir_path = dir_path.join('/')
 
@@ -116,7 +116,8 @@ module JSLint
         puts "Making #{dir_path}"
         Dir.mkdir(dir_path)
 
-        tmp_file = File.new(tmp_file_handle, "w+")
+        puts "Making new file"
+        tmp_file = File.new(tmp_file_handle, "w")
 
       end
       #after this, take the javascript out of the files and push it to a tmp file and return the new tmp file name
