@@ -90,9 +90,9 @@ module JSLint
 
       matching_files.each do |file|
         #got the files. now check to see if they have :javascript tags
-        file = File.new(file, 'r')
+        process_file = File.new(file, 'r')
 
-        while l = file.gets do
+        while l = process_file.gets do
           puts "gets::#{l}"
           if l =~ /:javascript/i
             puts "Matched that mother"
