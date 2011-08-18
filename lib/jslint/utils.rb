@@ -146,7 +146,7 @@ module JSLint
         File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
         FileUtils.mkdir_p(dir_path)
 
-        split_files = IO.read(file_name).split(/\s*\/\\s*:javascript/i)
+        split_files = IO.read(file_name).split(/\s*\/\s*:javascript/i)
         split_file = split_files.first.split(/:javascript/).last
 
         out =  File.open("tmp/jslint/overwrite.tmp", "w")
