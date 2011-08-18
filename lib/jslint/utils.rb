@@ -67,12 +67,12 @@ module JSLint
       end
 
       def extract_and_store_haml_javascript(file_and_depth)
-=begin
-      end
         tmp_javascript_files = []
         #need to caputre the number of \s in the front of :javascript and use it determine if i reject lines
-
         file_and_depth.each do |ele|
+          require 'ruby-debug'
+          debugger
+
           file_list = ele[:file]
           depth_of_tag = ele[:depth]
 
@@ -108,7 +108,6 @@ module JSLint
         end
 
         return tmp_javascript_files
-=end
       end
 
       def paths_from_command_line(field)
