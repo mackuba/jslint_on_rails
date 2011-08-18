@@ -70,7 +70,7 @@ module JSLint
       def extract_and_store_haml_javascript(file_and_depth)
         tmp_javascript_files = []
         indent_depth = Regexp.new(/((\s?)+)\S/i)
-        this_id_gsub = Regexp.new(/#\{(\w+).id\}/)
+        this_id_gsub = Regexp.new(/#\{(\S+).id\}/)
         #need to caputre the number of \s in the front of :javascript and use it determine if i reject lines
         file_and_depth.each do |ele|
 
