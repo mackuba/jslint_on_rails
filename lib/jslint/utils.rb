@@ -44,8 +44,54 @@ module JSLint
       end
 
       #workaround for pulling :javascript sections out of haml files and temp storing them so we can run jslint on the javascript
-      def extract_and_store_haml_javascript(list)
+      def haml_files_with_javascript(list)
+        javascript_haml_files = []
 
+        matching_files.each do |file|
+           #got the files. now check to see if they have :javascript tags
+           process_file = File.new(file, 'r')
+
+           while l = process_file.gets do
+             if l =~ /:javascript/i
+               javascript_haml_files << file
+               next
+             end
+           end
+
+           process_file.close
+         end
+
+        javascript_haml_files = []
+      end
+
+      def extract_and_store_haml_javascript(file_list)
+        tmp_javascript_files = []
+        javascript_pull = Regexp.new(/:javascript(.*)/i)
+        #need to caputre the number of \s in the front of :javascript and use it determine if i reject lines
+
+        javascript_haml_files.each do |file|
+          tmp_file_handle = "tmp/jslint/#{file}.js"
+          tmp_javascript_files << tmp_file_handle
+
+          dir_path = tmp_file_handle.split('/')
+          dir_path.delete(dir_path.last)
+          dir_path = dir_path.join('/')
+
+          File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
+          FileUtils.mkdir_p(dir_path)
+
+          s = IO.read(file).split(':javascript').last
+          out =  File.open(tmp_file_handle, "w")
+
+          s.split('\n').each do |line|
+            next if line =~ /\s+\//i
+            out.puts line
+          end
+
+          out.close
+        end
+
+        return tmp_javascript_files
       end
 
       def paths_from_command_line(field)

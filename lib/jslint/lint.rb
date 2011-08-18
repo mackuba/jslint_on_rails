@@ -83,47 +83,10 @@ module JSLint
       matching_files = files_matching_paths(options, field) || []
       return matching_files if matching_files.empty?
 
-      javascript_haml_files = []
+      javascript_haml_files = Utils.haml_files_with_javascript(matching_files)
+      Utils.extract_and_store_haml_javascript(javascript_haml_files)
 
-      matching_files.each do |file|
-        #got the files. now check to see if they have :javascript tags
-        process_file = File.new(file, 'r')
-
-        while l = process_file.gets do
-          if l =~ /:javascript/i
-            javascript_haml_files << file
-            next
-          end
-        end
-
-        process_file.close
-      end
-
-      tmp_javascript_files = []
-      javascript_pull = Regexp.new(/:javascript(.*)/i)
-
-      javascript_haml_files.each do |file|
-        tmp_file_handle = "tmp/jslint/#{file}.js"
-        tmp_javascript_files << tmp_file_handle
-
-        dir_path = tmp_file_handle.split('/')
-        dir_path.delete(dir_path.last)
-        dir_path = dir_path.join('/')
-
-        File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
-        FileUtils.mkdir_p(dir_path)
-
-        s = IO.read(file).split(':javascript').last
-        out =  File.open(tmp_file_handle, "w")
-        s.split('\n').each do |line|
-          next if line =~ /\s+\//i
-          out.puts line
-        end
-        out.close
-
-      end
-
-      return tmp_javascript_files
     end
+
   end
 end
