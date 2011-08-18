@@ -90,7 +90,7 @@ module JSLint
           lines = File.new(tmp_file,"r")
           out = File.new(tmp_file_handle, "w")
 
-=begin          while (line = lines.gets)
+          while (line = lines.gets)
             #Drops commented lines
             next if line =~ /\s+\//i
 
@@ -109,7 +109,7 @@ module JSLint
 
             out.puts line
           end
-=end
+
           out.close
         end
 
