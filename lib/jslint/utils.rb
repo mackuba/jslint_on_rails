@@ -104,7 +104,7 @@ module JSLint
             #we have the indent for the :javascript
             #if indent is <= depth_of_tag drop the rest of the file
             #FIXME Known bug. Will only eval first :javascript block in HAML file
-            break if line.match(indent_depth)[1].size <= depth_of_tag
+            break if line.match(indent_depth)[1].size < depth_of_tag + 2
 
             out.puts line
           end
