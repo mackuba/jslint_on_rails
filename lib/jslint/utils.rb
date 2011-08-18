@@ -117,8 +117,9 @@ module JSLint
       end
 
       def find_and_replace_ruby_injection(line, replacements)
-        ruby_injection = Regexp.new(/#\{([\w|\.|:|\_|\(|\)]+)\}/i)
+        ruby_injection = Regexp.new(/#\{([@|\w|\.|:|\_|\(|\)]+)\}/i)
 #{profile.avatar_geometry(:large).width}
+##{@avatar_owner.avatar_geometry(:large).width}
 
 
         to_replace = {}
