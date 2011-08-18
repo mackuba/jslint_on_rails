@@ -98,6 +98,7 @@ module JSLint
           while (line = lines.gets)
             next if line =~ /\s+\//i
             next if line.strip.empty?
+            line.gsub!(/#\{id\}/i,"replaced_id")
 
             #now check to see how many indents. If less then the number :javascript was endnted drop them
             #we have the indent for the :javascript
