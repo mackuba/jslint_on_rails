@@ -103,7 +103,8 @@ module JSLint
             #we have the indent for the :javascript
             #if indent is <= then depth drop it
             if line.match(indent_depth)[1].size <= depth_of_tag
-              pp "droping the rest of #{file} at #{line}. Current depth #{line.match(indent_depth)[1].size}::accepted depth #{depth_of_tag}"
+              pp "droping the rest of #{file}  Current depth #{line.match(indent_depth)[1].size}::accepted depth #{depth_of_tag}"
+              pp line
               break
             end
 
