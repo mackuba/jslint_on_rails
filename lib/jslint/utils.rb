@@ -99,7 +99,6 @@ module JSLint
 
             #replace ruby injections
             line, replacement_hash = find_and_replace_ruby_injection(line, replacement_hash)
-            pp replacement_hash
 
             #now check to see how many indents. If less then the number :javascript was endnted drop them
             #we have the indent for the :javascript
@@ -120,6 +119,8 @@ module JSLint
         ruby_injection = Regexp.new(/#\{([@|\w|\.|:|\_|\(|\)]+)\}/i)
         #{profile.avatar_geometry(:large).width}
         #{@avatar_owner.avatar_geometry(:large).width}
+        # byprice = #{@businesses.sort_by{|b| b.instant_bid(params[:task])}.collect{|b| "business_#{b.id}"}.to_json}
+        # byrank = #{@businesses.sort_by{|b| -b.normalized_avg_rating}.collect{|b| "business_#{b.id}"}.to_json}
 
         to_replace = {}
 
