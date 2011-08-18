@@ -73,7 +73,7 @@ module JSLint
           require 'ruby-debug'
           debugger
 
-          file_list = ele[:file]
+          file = ele[:file]
           depth_of_tag = ele[:depth]
 
           tmp_file_handle = "tmp/jslint/#{file}.js"
