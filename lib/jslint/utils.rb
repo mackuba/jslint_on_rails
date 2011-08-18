@@ -87,11 +87,15 @@ module JSLint
           FileUtils.mkdir_p(dir_path)
 
           s = IO.read(file).split(':javascript').last
-          out =  File.open(tmp_file_handle, "w")
-          indent_depth = Regexp.new(/((\s?)+)\S/i)
 
-          #removes commented lines
-          s.split('\n').each do |line|
+          out =  File.open("tmp/jslint/overwrite.tmp", "w")
+          out.puts line
+          out.close
+
+          lines = File.new("tmp/jslint/overwrite.tmp","r")
+          out = File.new(tmp_file_handle, "w")
+
+          while (line = lines.gets)
             next if line =~ /\s+\//i
             next if line.strip.empty?
 
