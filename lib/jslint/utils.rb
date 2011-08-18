@@ -144,9 +144,6 @@ module JSLint
         out.puts split_file
         out.close
 
-        #Replace all ruby injections with placeholders
-        find_and_replace_ruby_injection(out.path)
-
         return out.path
       end
 
