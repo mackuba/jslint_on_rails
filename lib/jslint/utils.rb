@@ -47,7 +47,7 @@ module JSLint
       def haml_files_with_javascript(list)
         javascript_haml_files = []
 
-        matching_files.each do |file|
+        list.each do |file|
            #got the files. now check to see if they have :javascript tags
            process_file = File.new(file, 'r')
 
