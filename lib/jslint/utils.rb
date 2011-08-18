@@ -92,7 +92,7 @@ module JSLint
 
           while (line = lines.gets)
             #Drops commented lines
-            next if line =~ /\s+\//i
+            next if line =~ /\A\s+\//i
 
             #drops blank lines
             next if line.strip.empty?
