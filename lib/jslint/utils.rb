@@ -131,9 +131,6 @@ module JSLint
       end
 
       def create_tmp_javascript_file(file_name, tmp_file_handle)
-        require 'ruby-debug'
-        debugger
-
         dir_path = tmp_file_handle.split('/')
         dir_path.delete(dir_path.last)
         dir_path = dir_path.join('/')
@@ -141,7 +138,7 @@ module JSLint
         File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
         FileUtils.mkdir_p(dir_path)
 
-        split_file = IO.read(file).split(':javascript').last
+        split_file = IO.read(file_name).split(':javascript').last
 
         out =  File.open("tmp/jslint/overwrite.tmp", "w")
         out.puts split_file
