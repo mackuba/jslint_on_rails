@@ -123,10 +123,10 @@ module JSLint
 
 
         line.scan(ruby_injection) do |injected_ruby|
-          injected = injected_ruby[1].gsub(/\W/i, '_')
+          injected = injected_ruby.first.gsub(/\W/i, '_')
           replacements[injected] ||= "#{injected}_jslint"
 
-          line.gsub!('#{'+injected_ruby[1]+'}', replacements[injected])
+          line.gsub!('#{'+injected_ruby.first+'}', replacements[injected])
         end
 
         #line.gsub!(this_id_gsub, "#{this_id_match[1].gsub(/\W/i, '_')}_jslint_replacement")if this_id_match
