@@ -93,6 +93,7 @@ module JSLint
           #removes commented lines
           s.split('\n').each do |line|
             next if line =~ /\s+\//i
+            next if line.strip.empty?
 
             #now check to see how many indents. If less then the number :javascript was endnted drop them
             #we have the indent for the :javascript
