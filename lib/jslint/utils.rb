@@ -61,7 +61,7 @@ module JSLint
            process_file.close
          end
 
-        javascript_haml_files = []
+        javascript_haml_files
       end
 
       def extract_and_store_haml_javascript(file_list)
