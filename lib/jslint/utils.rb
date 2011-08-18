@@ -67,59 +67,87 @@ module JSLint
       end
 
 
+      #TODO split into 3 functions
+      #file create and split !! DONE
+      #file eval and replacment of ruby variables
+      #file check on depth and drop if deeper then depth
       def extract_and_store_haml_javascript(file_and_depth)
         tmp_javascript_files = []
+        #hash of replaced ruby variables and new values
+        replacement_hash = {}
+
         indent_depth = Regexp.new(/((\s?)+)\S/i)
-        this_id_gsub = Regexp.new(/#\{(\S+).id\}/)
         #need to caputre the number of \s in the front of :javascript and use it determine if i reject lines
         file_and_depth.each do |ele|
-
           file = ele[:file]
           depth_of_tag = ele[:depth]
 
           tmp_file_handle = "tmp/jslint/#{file}.js"
           tmp_javascript_files << tmp_file_handle
 
-          dir_path = tmp_file_handle.split('/')
-          dir_path.delete(dir_path.last)
-          dir_path = dir_path.join('/')
+          tmp_file = create_tmp_javascript_file(file, tmp_file_handle)
 
-          File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
-          FileUtils.mkdir_p(dir_path)
-
-          split_file = IO.read(file).split(':javascript').last
-
-          out =  File.open("tmp/jslint/overwrite.tmp", "w")
-          out.puts split_file
-          out.close
-
-          lines = File.new("tmp/jslint/overwrite.tmp","r")
+          lines = File.new(tmp_file,"r")
           out = File.new(tmp_file_handle, "w")
 
           while (line = lines.gets)
+            #Drops commented lines
             next if line =~ /\s+\//i
+
+            #drops blank lines
             next if line.strip.empty?
-            line.gsub!(/#\{id\}/i,"jslint_replaced_id")
-            this_id_match = this_id_gsub.match(line)
-            line.gsub!(this_id_gsub, "#{this_id_match[1].gsub(/\W/i, '_')}_jslint_replacement")if this_id_match
+
+            #replace ruby injections
+            line, replacement_hash = find_and_replace_ruby_injection(line, replacement_hash)
+            pp replacement_hash
 
             #now check to see how many indents. If less then the number :javascript was endnted drop them
             #we have the indent for the :javascript
-            #if indent is <= then depth drop it
-            if line.match(indent_depth)[1].size <= depth_of_tag
-              pp "droping the rest of #{file}  Current depth #{line.match(indent_depth)[1].size}::accepted depth #{depth_of_tag}"
-              pp line
-              break
-            end
+            #if indent is <= depth_of_tag drop the rest of the file
+            #FIXME Known bug. Will only eval first :javascript block in HAML file
+            break if line.match(indent_depth)[1].size <= depth_of_tag
 
             out.puts line
           end
-
 
           out.close
         end
 
         return tmp_javascript_files
+      end
+
+      def find_and_replace_ruby_injection(line, replacements)
+        ruby_injection = Regexp.new(/#\{(\S+)\}/)
+
+        ruby_injection.scan(line) do |injected_ruby|
+          replacements[injected_ruby] ||= "#{injected_ruby.gsub(/W/i,'_')}_jslint"
+
+          line.gsub!(injected_ruby, replacements[injected_ruby])
+        end
+
+        #line.gsub!(this_id_gsub, "#{this_id_match[1].gsub(/\W/i, '_')}_jslint_replacement")if this_id_match
+
+        return line, replacements
+      end
+
+      def create_tmp_javascript_file(file_name, tmp_file_name)
+        dir_path = tmp_file_handle.split('/')
+        dir_path.delete(dir_path.last)
+        dir_path = dir_path.join('/')
+
+        File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
+        FileUtils.mkdir_p(dir_path)
+
+        split_file = IO.read(file).split(':javascript').last
+
+        out =  File.open("tmp/jslint/overwrite.tmp", "w")
+        out.puts split_file
+        out.close
+
+        #Replace all ruby injections with placeholders
+        find_and_replace_ruby_injection(out.path)
+
+        return out.path
       end
 
       def paths_from_command_line(field)
