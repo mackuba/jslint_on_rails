@@ -118,6 +118,9 @@ module JSLint
 
       def find_and_replace_ruby_injection(line, replacements)
         ruby_injection = Regexp.new(/#\{(\S+)\}/)
+        require 'ruby-debug'
+        debugger
+
 
         line.scan(ruby_injection) do |injected_ruby|
           replacements[injected_ruby] ||= "#{injected_ruby.gsub(/W/i,'_')}_jslint"
