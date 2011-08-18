@@ -118,15 +118,22 @@ module JSLint
 
       def find_and_replace_ruby_injection(line, replacements)
         ruby_injection = Regexp.new(/#\{([\w|\.|\_|\(|\)]+)\}/i)
-        require 'ruby-debug'
-        debugger
 
+
+        to_replace = {}
 
         line.scan(ruby_injection) do |injected_ruby|
           injected = injected_ruby.first.gsub(/\W/i, '_')
           replacements[injected] ||= "#{injected}_jslint"
 
-          line.gsub!('#{'+injected_ruby.first+'}', replacements[injected])
+          to_replace['#{'+injected_ruby.first+'}']  = replacements[injected]
+        end
+
+        require 'ruby-debug'
+        debugger
+
+        to_replace.each_pair do |k, v|
+          line.gsub!(k, v)
         end
 
         #line.gsub!(this_id_gsub, "#{this_id_match[1].gsub(/\W/i, '_')}_jslint_replacement")if this_id_match
