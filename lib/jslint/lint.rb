@@ -84,9 +84,6 @@ module JSLint
       return matching_files if matching_files.empty?
 
       javascript_haml_files = Utils.haml_files_with_javascript(matching_files)
-      puts "Got here"
-      pp javascript_haml_files
-
       Utils.extract_and_store_haml_javascript(javascript_haml_files)
     end
 

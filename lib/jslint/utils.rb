@@ -45,7 +45,8 @@ module JSLint
 
       #workaround for pulling :javascript sections out of haml files and temp storing them so we can run jslint on the javascript
       def haml_files_with_javascript(list)
-        javascript_haml_files = []
+        javascript_haml_files_and_depth = []
+        javascript_tag = Regexp.new(/((\s?)+):javascript/i)
 
         list.each do |file|
            #got the files. now check to see if they have :javascript tags
@@ -53,7 +54,8 @@ module JSLint
 
            while l = process_file.gets do
              if l =~ /:javascript/i
-               javascript_haml_files << file
+               depth = l.match(javascript_tag)[1].size
+               javascript_haml_files_and_depth << {:file => file, :depth => depth}
                next
              end
            end
@@ -61,13 +63,13 @@ module JSLint
            process_file.close
          end
 
-        javascript_haml_files
+        javascript_haml_files_and_depth
       end
 
-      def extract_and_store_haml_javascript(file_list)
+      def extract_and_store_haml_javascript(file_and_depth)
         tmp_javascript_files = []
-        javascript_pull = Regexp.new(/:javascript(.*)/i)
         #need to caputre the number of \s in the front of :javascript and use it determine if i reject lines
+        file_list = file_and_depth.collect{|ele| ele[:file]}
 
         file_list.each do |file|
           tmp_file_handle = "tmp/jslint/#{file}.js"
@@ -84,10 +86,14 @@ module JSLint
           s = IO.read(file).split(':javascript').last
           out =  File.open(tmp_file_handle, "w")
 
+          #removes commented lines
           s.split('\n').each do |line|
             next if line =~ /\s+\//i
+
+            #now check to see how many indents. If less then the number :javascript was endnted drop them
             out.puts line
           end
+
 
           out.close
         end
