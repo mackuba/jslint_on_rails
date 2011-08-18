@@ -70,8 +70,6 @@ module JSLint
         tmp_javascript_files = []
         #need to caputre the number of \s in the front of :javascript and use it determine if i reject lines
         file_and_depth.each do |ele|
-          require 'ruby-debug'
-          debugger
 
           file = ele[:file]
           depth_of_tag = ele[:depth]
