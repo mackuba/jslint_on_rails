@@ -69,9 +69,11 @@ module JSLint
       def extract_and_store_haml_javascript(file_and_depth)
         tmp_javascript_files = []
         #need to caputre the number of \s in the front of :javascript and use it determine if i reject lines
-        file_list = file_and_depth.collect{|ele| ele[:file]}
 
-        file_list.each do |file|
+        file_and_depth.each do |ele|
+          file_list = ele[:file]
+          depth_of_tag = ele[:depth]
+
           tmp_file_handle = "tmp/jslint/#{file}.js"
           pp tmp_file_handle
           tmp_javascript_files << tmp_file_handle
@@ -85,12 +87,17 @@ module JSLint
 
           s = IO.read(file).split(':javascript').last
           out =  File.open(tmp_file_handle, "w")
+          indent_depth = Regexp.new(/((\s?)+)\S/i)
 
           #removes commented lines
           s.split('\n').each do |line|
             next if line =~ /\s+\//i
 
             #now check to see how many indents. If less then the number :javascript was endnted drop them
+            #we have the indent for the :javascript
+            #if indent is <= then depth drop it
+            break if line.match(indent_depth)[1].size <= depth_of_tag
+
             out.puts line
           end
 
