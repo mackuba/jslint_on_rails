@@ -66,6 +66,7 @@ module JSLint
         javascript_haml_files_and_depth
       end
 
+
       def extract_and_store_haml_javascript(file_and_depth)
         tmp_javascript_files = []
         #need to caputre the number of \s in the front of :javascript and use it determine if i reject lines
@@ -96,7 +97,10 @@ module JSLint
             #now check to see how many indents. If less then the number :javascript was endnted drop them
             #we have the indent for the :javascript
             #if indent is <= then depth drop it
-            break if line.match(indent_depth)[1].size <= depth_of_tag
+            if line.match(indent_depth)[1].size <= depth_of_tag
+              pp "droping the rest of #{file} at #{line}"
+              break
+            end
 
             out.puts line
           end
