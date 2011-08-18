@@ -70,6 +70,7 @@ module JSLint
       def extract_and_store_haml_javascript(file_and_depth)
         tmp_javascript_files = []
         indent_depth = Regexp.new(/((\s?)+)\S/i)
+        this_id_gsub = Regexp.new(/#\{(\w+).id\}/)
         #need to caputre the number of \s in the front of :javascript and use it determine if i reject lines
         file_and_depth.each do |ele|
 
@@ -99,6 +100,8 @@ module JSLint
             next if line =~ /\s+\//i
             next if line.strip.empty?
             line.gsub!(/#\{id\}/i,"replaced_id")
+            this_id_match = this_id_gsub.match(line)
+            line.gsub!(this_id_gsub, "#{this_id_match[1]}_tmp_id")if this_id_match
 
             #now check to see how many indents. If less then the number :javascript was endnted drop them
             #we have the indent for the :javascript
