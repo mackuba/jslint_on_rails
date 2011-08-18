@@ -85,7 +85,6 @@ module JSLint
 
       javascript_haml_files = Utils.haml_files_with_javascript(matching_files)
       Utils.extract_and_store_haml_javascript(javascript_haml_files)
-      return []
     end
 
   end
