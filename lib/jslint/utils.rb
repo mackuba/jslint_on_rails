@@ -146,11 +146,8 @@ module JSLint
         File.delete(tmp_file_handle) if File.exist?(tmp_file_handle)
         FileUtils.mkdir_p(dir_path)
 
-        require 'ruby-debug'
-        debugger
-        split_file = IO.read(file_name).scan(/\s*:javascript/i){|matches|
-          matches unless matches =~ /\/\s*:javascript/i
-        }
+        split_files = IO.read(file_name).split(/\s*\/\\s*:javascript/i)
+        split_file = split_files.first.split(/:javascript/).last
 
         out =  File.open("tmp/jslint/overwrite.tmp", "w")
         out.puts split_file
