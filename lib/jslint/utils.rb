@@ -69,7 +69,7 @@ module JSLint
         javascript_pull = Regexp.new(/:javascript(.*)/i)
         #need to caputre the number of \s in the front of :javascript and use it determine if i reject lines
 
-        javascript_haml_files.each do |file|
+        file_list.each do |file|
           tmp_file_handle = "tmp/jslint/#{file}.js"
           tmp_javascript_files << tmp_file_handle
 
