@@ -148,8 +148,8 @@ module JSLint
 
         require 'ruby-debug'
         debugger
-        IO.read(file_name).scan(/\s*:javascript/i){|matches|
-          split_file = matches unless matches =~ /\/\s*:javascript/i
+        split_file = IO.read(file_name).scan(/\s*:javascript/i){|matches|
+          matches unless matches =~ /\/\s*:javascript/i
         }
 
         out =  File.open("tmp/jslint/overwrite.tmp", "w")
