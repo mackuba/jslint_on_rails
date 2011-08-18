@@ -103,7 +103,6 @@ module JSLint
             #now check to see how many indents. If less then the number :javascript was endnted drop them
             #we have the indent for the :javascript
             #if indent is <= then depth drop it
-            puts "testing ::#{line}:: deeper then #{depth_of_tag}"
             if line.match(indent_depth)[1].size <= depth_of_tag
               pp "droping the rest of #{file} at #{line}"
               break
