@@ -131,6 +131,9 @@ module JSLint
       end
 
       def create_tmp_javascript_file(file_name, tmp_file_handle)
+        require 'ruby-debug'
+        debugger
+
         dir_path = tmp_file_handle.split('/')
         dir_path.delete(dir_path.last)
         dir_path = dir_path.join('/')
