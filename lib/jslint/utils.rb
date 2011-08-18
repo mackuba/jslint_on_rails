@@ -71,6 +71,7 @@ module JSLint
 
         file_list.each do |file|
           tmp_file_handle = "tmp/jslint/#{file}.js"
+          pp tmp_file_handle
           tmp_javascript_files << tmp_file_handle
 
           dir_path = tmp_file_handle.split('/')
