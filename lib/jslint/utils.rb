@@ -129,12 +129,7 @@ module JSLint
           to_replace['#{'+injected_ruby.first+'}']  = replacements[injected]
         end
 
-        require 'ruby-debug'
-        debugger
-
-        to_replace.each_pair do |k, v|
-          line.gsub!(k, v)
-        end
+        to_replace.each_pair{|k, v| line.gsub!(k, v)}
 
         #line.gsub!(this_id_gsub, "#{this_id_match[1].gsub(/\W/i, '_')}_jslint_replacement")if this_id_match
 
