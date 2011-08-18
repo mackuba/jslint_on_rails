@@ -118,17 +118,16 @@ module JSLint
 
       def find_and_replace_ruby_injection(line, replacements)
         ruby_injection = Regexp.new(/#\{([@|\w|\.|:|\_|\(|\)]+)\}/i)
-#{profile.avatar_geometry(:large).width}
-##{@avatar_owner.avatar_geometry(:large).width}
-
+        #{profile.avatar_geometry(:large).width}
+        #{@avatar_owner.avatar_geometry(:large).width}
 
         to_replace = {}
 
         line.scan(ruby_injection) do |injected_ruby|
           injected = injected_ruby.first.gsub(/\W/i, '_')
-          replacements[injected] ||= "#{injected}_jslint"
+          replacements[injected_ruby.first] ||= "#{injected}_jslint"
 
-          to_replace['#{'+injected_ruby.first+'}']  = replacements[injected]
+          to_replace['#{'+injected_ruby.first+'}']  = replacements[injected_ruby.first]
         end
 
         to_replace.each_pair{|k, v| line.gsub!(k, v)}
