@@ -82,6 +82,8 @@ module JSLint
           file = ele[:file]
           depth_of_tag = ele[:depth]
 
+          puts "Processing #{file} for JSLint validation"
+
           tmp_file_handle = "tmp/jslint/#{file}.js"
           tmp_javascript_files << tmp_file_handle
 
