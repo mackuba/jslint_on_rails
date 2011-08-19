@@ -129,7 +129,7 @@ module JSLint
         to_replace = {}
 
         line.scan(ruby_injection) do |injected_ruby|
-          injected = injected_ruby.first.gsub(/\W/i, '_')
+          injected = injected_ruby.first.gsub('@','').gsub(/\W/i, '_')
           replacements[injected_ruby.first] ||= "#{injected}_jslint"
 
           to_replace['#{'+injected_ruby.first+'}']  = replacements[injected_ruby.first]
