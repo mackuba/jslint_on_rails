@@ -120,11 +120,12 @@ module JSLint
         #{profile.avatar_geometry(:large).width}
         #{@avatar_owner.avatar_geometry(:large).width}
 
-        to_json_iterator_replacement = Regexp.new(/\w\{.*\}.to_json/i)
+        # used to replace sort inline scripts so that the usual ruby inject regexp works correctly.
         # byprice = #{@businesses.sort_by{|b| b.instant_bid(params[:task])}.collect{|b| "business_#{b.id}"}.to_json}
         # byrank = #{@businesses.sort_by{|b| -b.normalized_avg_rating}.collect{|b| "business_#{b.id}"}.to_json}
-
+        to_json_iterator_replacement = Regexp.new(/\w\{.*\}.to_json/i)
         line.gsub!(to_json_iterator_replacement, '_to_json_jslint')
+
 
         to_replace = {}
 
@@ -136,8 +137,6 @@ module JSLint
         end
 
         to_replace.each_pair{|k, v| line.gsub!(k, v)}
-
-        #line.gsub!(this_id_gsub, "#{this_id_match[1].gsub(/\W/i, '_')}_jslint_replacement")if this_id_match
 
         return line, replacements
       end
