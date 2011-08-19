@@ -124,7 +124,7 @@ module JSLint
         # byprice = #{@businesses.sort_by{|b| b.instant_bid(params[:task])}.collect{|b| "business_#{b.id}"}.to_json}
         # byrank = #{@businesses.sort_by{|b| -b.normalized_avg_rating}.collect{|b| "business_#{b.id}"}.to_json}
 
-        line.gsub!(to_json_iterator_replacement, '_to_json_jslint'
+        line.gsub!(to_json_iterator_replacement, '_to_json_jslint')
 
         to_replace = {}
 
