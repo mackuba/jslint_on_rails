@@ -28,11 +28,13 @@ module JSLint
       end
 
       included_files = files_matching_paths(options, :paths)
+      included_files += haml_files_with_javascript(options, :haml_paths)
+
       excluded_files = files_matching_paths(options, :exclude_paths)
       @file_list = Utils.exclude_files(included_files, excluded_files)
       @file_list.delete_if { |f| File.size(f) == 0 }
 
-      ['paths', 'exclude_paths'].each { |field| @config.delete(field) }
+      ['paths', 'exclude_paths', 'haml_paths'].each { |field| @config.delete(field) }
     end
 
     def run
@@ -72,10 +74,18 @@ module JSLint
     def files_matching_paths(options, field)
       path_list = options[field] || @config[field.to_s] || []
       path_list = [path_list] unless path_list.is_a?(Array)
+
       file_list = path_list.map { |p| Dir[p] }.flatten
       Utils.unique_files(file_list)
     end
 
-  end
+    def haml_files_with_javascript(options, field)
+      matching_files = files_matching_paths(options, field) || []
+      return matching_files if matching_files.empty?
 
+      javascript_haml_files = Utils.haml_files_with_javascript(matching_files)
+      Utils.extract_and_store_haml_javascript(javascript_haml_files)
+    end
+
+  end
 end

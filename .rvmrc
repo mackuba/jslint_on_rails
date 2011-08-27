@@ -1,0 +1,5 @@
+if [[ -s "~/.rvm/environments/ruby-1.9.2-p180@jslint" ]] ; then
+  rvm use . ruby-1.9.2-p180@jslint
+else
+  rvm --create use ruby-1.9.2-p180@jslint
+fi
