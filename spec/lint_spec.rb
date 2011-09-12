@@ -7,9 +7,9 @@ describe JSLint::Lint do
   end
 
   before :all do
-    File.open(JSLint::DEFAULT_CONFIG_FILE, "w") { |f| f.write "color: red\nsize: 5\nshape: circle\n" }
-    File.open("custom_config.yml", "w") { |f| f.write "color: blue\nsize: 7\nborder: 2\n" }
-    File.open("other_config.yml", "w") { |f| f.write "color: green\nborder: 0\nshape: square" }
+    create_config 'color' => 'red', 'size' => 5, 'shape' => 'circle'
+    create_file 'custom_config.yml', 'color' => 'blue', 'size' => 7, 'border' => 2
+    create_file 'other_config.yml', 'color' => 'green', 'border' => 0, 'shape' => 'square'
     JSLint.config_path = "custom_config.yml"
   end
 
@@ -28,23 +28,22 @@ describe JSLint::Lint do
   end
 
   it "should convert predef to string if it's an array" do
-    File.open("predef.yml", "w") { |f| f.write "predef:\n  - a\n  - b\n  - c" }
+    create_file 'predef.yml', 'predef' => ['a', 'b', 'c']
 
     lint = JSLint::Lint.new :config_path => 'predef.yml'
     lint.config['predef'].should == "a,b,c"
   end
 
   it "should accept predef as string" do
-    File.open("predef.yml", "w") { |f| f.write "predef: d,e,f" }
+    create_file 'predef.yml', 'predef' => 'd,e,f'
 
     lint = JSLint::Lint.new :config_path => 'predef.yml'
     lint.config['predef'].should == "d,e,f"
   end
 
   it "should not pass paths and exclude_paths options to real JSLint" do
-    File.open("test.yml", "w") do |f|
-      f.write(YAML.dump({ 'paths' => ['a', 'b'], 'exclude_paths' => ['c'], 'debug' => 'true' }))
-    end
+    create_file 'test.yml', 'paths' => ['a', 'b'], 'exclude_paths' => ['c'], 'debug' => 'true'
+
     lint = JSLint::Lint.new :config_path => 'test.yml'
     lint.config['debug'].should == 'true'
     lint.config['paths'].should be_nil
@@ -130,7 +129,7 @@ describe JSLint::Lint do
 
     before :all do
       @files = ['test/app.js', 'test/lib.js', 'test/utils.js', 'test/vendor/jquery.js', 'test/vendor/proto.js']
-      @files.each { |fn| File.open(fn, "w") { |f| f.write("alert()") }}
+      @files.each { |fn| create_file(fn, "alert()") }
       @files = @files.map { |fn| File.expand_path(fn) }
     end
 
@@ -150,7 +149,7 @@ describe JSLint::Lint do
       lint = JSLint::Lint.new :paths => ['test/**/*.js', 'test/**/a*.js', 'test/**/p*.js']
       lint.file_list.should == @files
 
-      File.open("new.yml", "w") { |f| f.write(YAML.dump({ 'paths' => ['test/vendor/*.js'] })) }
+      create_file 'new.yml', 'paths' => ['test/vendor/*.js']
 
       lint = JSLint::Lint.new :config_path => 'new.yml', :exclude_paths => ['**/proto.js']
       lint.file_list.should == [@files[3]]
@@ -167,8 +166,8 @@ describe JSLint::Lint do
     end
 
     it "should ignore empty files" do
-      File.open("test/empty.js", "w") { |f| f.write("") }
-      File.open("test/full.js", "w") { |f| f.write("qqq") }
+      create_file 'test/empty.js', ''
+      create_file 'test/full.js', 'qqq'
 
       lint = JSLint::Lint.new :paths => ['test/*.js']
       lint.file_list.should_not include(File.expand_path("test/empty.js"))

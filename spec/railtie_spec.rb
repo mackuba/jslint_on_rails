@@ -3,7 +3,7 @@ require 'jslint/railtie'
 
 describe JSLint::Railtie do
   before :all do
-    File.open(JSLint::DEFAULT_CONFIG_FILE, "w") { |f| f.write "foo" }
+    create_config 'example config'
     JSLint.config_path = "custom_config.yml"
   end
 
@@ -16,11 +16,11 @@ describe JSLint::Railtie do
       JSLint::Railtie.create_example_config
 
       File.exist?(JSLint.config_path).should be_true
-      File.read(JSLint.config_path).should == "foo"
+      File.read(JSLint.config_path).should == 'example config'
     end
 
     it "should not do anything if config already exists" do
-      File.open(JSLint.config_path, "w") { |f| f.write "bar" }
+      create_file(JSLint.config_path, "bar")
 
       JSLint::Railtie.create_example_config
 

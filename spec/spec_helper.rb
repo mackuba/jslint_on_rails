@@ -19,3 +19,18 @@ module FileUtils
     cp(*args)
   end
 end
+
+module SpecHelper
+  def create_file(filename, contents)
+    contents = YAML.dump(contents) + "\n" unless contents.is_a?(String)
+    File.open(filename, "w") { |f| f.print(contents) }
+  end
+
+  def create_config(data)
+    create_file(JSLint::DEFAULT_CONFIG_FILE, data)
+  end
+end
+
+RSpec.configure do |config|
+  config.include SpecHelper
+end

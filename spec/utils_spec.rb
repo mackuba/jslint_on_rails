@@ -5,7 +5,7 @@ describe JSLint::Utils do
   JSU = JSLint::Utils
 
   before :all do
-    File.open(JSLint::DEFAULT_CONFIG_FILE, "w") { |f| f.puts "default config file" }
+    create_config "default config file"
   end
 
   it "should have a config_path setting" do
@@ -37,7 +37,7 @@ describe JSLint::Utils do
   describe "load_config_file" do
   
     before :all do
-      File.open("sample.yml", "w") { |f| f.puts("framework: rails") }
+      create_file 'sample.yml', 'framework: rails'
       Dir.mkdir("tmp")
     end
   
@@ -103,7 +103,7 @@ describe JSLint::Utils do
 
     it "should not overwrite the file if it exists" do
       JSLint.config_path = "newfile2.yml"
-      File.open("newfile2.yml", "w") { |f| f.write("qwe") }
+      create_file 'newfile2.yml', 'qwe'
       FileUtils.should_not_receive(:copy)
       JSLint::Utils.copy_config_file
     end
@@ -117,7 +117,7 @@ describe JSLint::Utils do
 
     it "should remove the file if it's identical to default one" do
       JSLint.config_path = "newfile3.yml"
-      File.open("newfile3.yml", "w") { |f| f.puts("default config file") }
+      create_file 'newfile3.yml', 'default config file'
       File.exists?("newfile3.yml").should be_true
       JSLint::Utils.remove_config_file
       File.exists?("newfile3.yml").should be_false
@@ -125,7 +125,7 @@ describe JSLint::Utils do
 
     it "should not remove the file if it's not identical to default one" do
       JSLint.config_path = "newfile4.yml"
-      File.open("newfile4.yml", "w") { |f| f.puts("something's changed") }
+      create_file 'newfile4.yml', "something's changed"
       File.exists?("newfile4.yml").should be_true
       JSLint::Utils.remove_config_file
       File.exists?("newfile4.yml").should be_true
