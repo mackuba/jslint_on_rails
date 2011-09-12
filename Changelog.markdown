@@ -1,3 +1,7 @@
+Version 1.0.7 (12.09.2011)
+
+* fixed problem with local options from one file being applied to all subsequent files
+
 Version 1.0.6 (19.02.2011)
 
 * escape $ in predef line to prevent Bash for interpreting it

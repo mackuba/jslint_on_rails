@@ -3,7 +3,7 @@ require 'yaml'
 
 module JSLint
 
-  VERSION = "1.0.6"
+  VERSION = "1.0.7"
   DEFAULT_CONFIG_FILE = File.expand_path(File.dirname(__FILE__) + "/config/jslint.yml")
 
   class << self
