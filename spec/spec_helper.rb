@@ -20,6 +20,14 @@ module FileUtils
   end
 end
 
+module FakeFS
+  class File
+    def self.identical?(file1, file2)
+      File.expand_path(file1) == File.expand_path(file2)
+    end
+  end
+end
+
 module SpecHelper
   def create_file(filename, contents)
     contents = YAML.dump(contents) + "\n" unless contents.is_a?(String)
