@@ -1,4 +1,5 @@
 require 'jslint'
+require 'pp' # fix for fakefs/pp incompatibility in Ruby 1.9.3
 require 'fakefs'
 
 module JSLint::Utils
