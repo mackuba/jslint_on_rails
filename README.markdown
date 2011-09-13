@@ -1,5 +1,7 @@
 # JSLint on Rails
 
+[![Build Status](https://secure.travis-ci.org/psionides/jslint_on_rails.png)](http://travis-ci.org/psionides/jslint_on_rails)
+
 **JSLint on Rails** is a Ruby library which lets you run
 the [JSLint JavaScript code checker](https://github.com/douglascrockford/JSLint) on your Javascript code easily. It can
 be installed either as a gem (the recommended method), or as a Rails plugin (legacy method).
