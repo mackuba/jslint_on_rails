@@ -134,6 +134,12 @@ For the best effect, you should include JSLint check in your Continuous Integrat
 immediate notification when you've committed JS code with errors.
 
 
+## Running automatically with Guard
+
+If you want to run JSLint on Rails automatically everytime you save a JS file, check out the
+[guard-jslint-on-rails](https://github.com/wireframe/guard-jslint-on-rails) gem by Ryan Sonnek.
+
+
 ## Additional options
 
 I've added some additional options to JSLint to get rid of some warnings which I thought didn't make sense. They're all
