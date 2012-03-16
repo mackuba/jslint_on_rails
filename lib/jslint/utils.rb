@@ -10,6 +10,12 @@ module JSLint
     attr_accessor :config_path
   end
 
+  self.config_path = if defined?(Rails)
+    File.join(Rails.root, 'config', 'jslint.yml')
+  else
+    'config/jslint.yml'
+  end
+
   module Utils
     class << self
 
