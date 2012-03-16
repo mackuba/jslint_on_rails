@@ -59,22 +59,6 @@ module JSLint
           xputs "done."
         end
       end
-
-      def remove_config_file
-        raise ArgumentError, "Please set JSLint.config_path" if JSLint.config_path.nil?
-        xprint "Removing config file... "
-        if File.exists?(JSLint.config_path) && File.file?(JSLint.config_path)
-          if File.read(JSLint.config_path) == File.read(JSLint::DEFAULT_CONFIG_FILE)
-            File.delete(JSLint.config_path)
-            xputs "OK."
-          else
-            xputs "File was modified, so it won't be deleted automatically."
-          end
-        else
-          xputs "OK (no config file found)."
-        end
-      end
-
     end
   end
 end

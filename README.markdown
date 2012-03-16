@@ -3,8 +3,7 @@
 [![Build Status](https://secure.travis-ci.org/psionides/jslint_on_rails.png)](http://travis-ci.org/psionides/jslint_on_rails)
 
 **JSLint on Rails** is a Ruby library which lets you run
-the [JSLint JavaScript code checker](https://github.com/douglascrockford/JSLint) on your Javascript code easily. It can
-be installed either as a gem (the recommended method), or as a Rails plugin (legacy method).
+the [JSLint JavaScript code checker](https://github.com/douglascrockford/JSLint) on your Javascript code easily.
 
 Note: to run JSLint on Rails, you need to have **Java** available on your machine - it's required because JSLint is
 itself written in JavaScript, and is run using the [Rhino](http://www.mozilla.org/rhino) JavaScript engine (written in
@@ -13,16 +12,12 @@ Java). Any decent version of Java will do (and by decent I mean 5.0 or later).
 
 ## Compatibility
 
-Latest version should be compatible with Ruby 1.9 and Rails 3 (and also with Ruby 1.8 and Rails 2, of course).
+Latest version should be compatible with Ruby 1.8.7 and 1.9.2+ (check [Travis build status](http://travis-ci.org/#!/psionides/jslint_on_rails)), and also with Rails 2.x and 3.x.
 
 
-## Installation (as gem)
+## Installation
 
-The recommended installation method (for Rails and for other frameworks) is to install JSLint on Rails as a gem. The
-advantage is that it's easier to update the library to newer versions later, and you keep its code separate from your
-own code.
-
-To use JSLint as a gem in Rails 3, you just need to do one thing:
+To use JSLint in Rails 3 you just need to do one thing:
 
 * add `gem 'jslint_on_rails'` to bundler's Gemfile
 
@@ -48,18 +43,7 @@ file to be kept - for example:
         rake jslint:copy_config
 
 
-## Installation (as Rails plugin)
-
-Installing libraries as Rails plugins was popular before Rails 3, but now gems with Railties can do everything that
-plugins could do, so plugins are getting less and less popular. But if you want to install JSLint on Rails as a plugin
-anyway, here's how you do it:
-
-    ./script/plugin install git://github.com/psionides/jslint_on_rails.git
-
-This will also create a sample `jslint.yml` config file for you in your config directory.
-
-
-## Installation (custom)
+## Custom installation
 
 If you wish to write your own rake task to run JSLint, you can create and execute the JSLint object manually:
 

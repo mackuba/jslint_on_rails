@@ -108,41 +108,4 @@ describe JSLint::Utils do
       JSLint::Utils.copy_config_file
     end
   end
-
-  describe "remove_config_file" do
-    it "throw an error if config path isn't set" do
-      JSLint.config_path = nil
-      lambda { JSLint::Utils.remove_config_file }.should raise_error(ArgumentError)
-    end
-
-    it "should remove the file if it's identical to default one" do
-      JSLint.config_path = "newfile3.yml"
-      create_file 'newfile3.yml', 'default config file'
-      File.exists?("newfile3.yml").should be_true
-      JSLint::Utils.remove_config_file
-      File.exists?("newfile3.yml").should be_false
-    end
-
-    it "should not remove the file if it's not identical to default one" do
-      JSLint.config_path = "newfile4.yml"
-      create_file 'newfile4.yml', "something's changed"
-      File.exists?("newfile4.yml").should be_true
-      JSLint::Utils.remove_config_file
-      File.exists?("newfile4.yml").should be_true
-    end
-
-    it "should not remove the file if it doesn't exist" do
-      JSLint.config_path = "this_doesnt_exist.yml"
-      lambda { JSLint::Utils.remove_config_file }.should_not raise_error
-    end
-
-    it "should not remove the file if it's not a file" do
-      Dir.mkdir("public")
-      JSLint.config_path = "public"
-      lambda { JSLint::Utils.remove_config_file }.should_not raise_error
-      File.exist?("public").should be_true
-      File.directory?("public").should be_true
-    end
-  end
-
 end
