@@ -5,7 +5,7 @@
 **JSLint on Rails** is a Ruby library which lets you run
 the [JSLint JavaScript code checker](https://github.com/douglascrockford/JSLint) on your Javascript code easily.
 
-Note: to run JSLint on Rails, you need to have **Java** available on your machine - it's required because JSLint is
+Note: to run JSLint on Rails you need to have **Java** available on your machine - it's required because JSLint is
 itself written in JavaScript, and is run using the [Rhino](http://www.mozilla.org/rhino) JavaScript engine (written in
 Java). Any decent version of Java will do (and by decent I mean 5.0 or later).
 
@@ -21,11 +21,7 @@ To use JSLint in Rails 3 you just need to do one thing:
 
 * add `gem 'jslint_on_rails'` to bundler's Gemfile
 
-And that's it. On first run, JSLint on Rails will create an example config file for you in config/jslint.yml, which
-you can then tweak to suit your app.
-
-In Rails 2 and in other frameworks JSLint on Rails can't be loaded automatically using a Railtie, so you have to do a
-bit more work. The procedure in this case is:
+In Rails 2 and other frameworks JSLint on Rails can't be loaded automatically using a Railtie, so you have to load it explicitly. The procedure in this case is:
 
 * install the gem in your application using whatever technique is recommended for your framework (e.g. using bundler,
 or by installing the gem manually with `gem install jslint_on_rails` and loading it with `require 'jslint'`)
@@ -33,40 +29,21 @@ or by installing the gem manually with `gem install jslint_on_rails` and loading
 
         require 'jslint/tasks'
 
-* below that line, set JSLint's config_path variable to point it to a place where you want your JSLint configuration
-file to be kept - for example:
-
-        JSLint.config_path = "config/jslint.yml"
-    
-* run a rake task which will generate a sample config file for you:
+Regardless of the Rails version it's strongly recommended that you create your own copy of the JSLint config file provided by the gem and tweak it to suit your preferences. To create a new config file from the template in your config directory, call this rake task:
 
         rake jslint:copy_config
 
+This will create a config file at `config/jslint.yml` listing all available options. If for some reason you'd like to put the config file at a different location, set the `config_path` variable somewhere in your Rakefile:
 
-## Custom installation
+        JSLint.config_path = "config/lint.yml"
 
-If you wish to write your own rake task to run JSLint, you can create and execute the JSLint object manually:
-
-    require 'jslint'
-    
-    lint = JSLint::Lint.new(
-      :paths => ['public/javascripts/**/*.js'],
-      :exclude_paths => ['public/javascripts/vendor/**/*.js'],
-      :config_path => 'config/jslint.yml'
-    )
-    
-    lint.run
-
-
-## Configuration
-
-Whatever method you use for installation, a YAML config file should be created for you. In this file, you can:
+There are two things you can change in the config file:
 
 * define which Javascript files are checked by default; you'll almost certainly want to change that, because the default
 is `public/javascripts/**/*.js` which means all Javascript files, and you probably don't want JSLint to check entire
 jQuery, Prototype or whatever other libraries you use - so change this so that only your scripts are checked (you can
 put multiple entries under "paths:" and "exclude_paths:")
-* tweak JSLint options to enable or disable specific checks - I've set the defaults to what I believe is reasonable,
+* enable or disable specific checks - I've set the defaults to what I believe is reasonable,
 but what's reasonable for me may not be reasonable for you
 
 
@@ -114,7 +91,7 @@ and/or paths to exclude to the rake task:
 
     rake jslint paths=public/javascripts/models/*.js,public/javascripts/lib/*.js exclude_paths=public/javascripts/lib/jquery.js
 
-For the best effect, you should include JSLint check in your Continuous Integration build - that way, you'll get
+For the best effect, you should include JSLint check in your Continuous Integration build - that way you'll get
 immediate notification when you've committed JS code with errors.
 
 
@@ -122,6 +99,21 @@ immediate notification when you've committed JS code with errors.
 
 If you want to run JSLint on Rails automatically everytime you save a JS file, check out the
 [guard-jslint-on-rails](https://github.com/wireframe/guard-jslint-on-rails) gem by Ryan Sonnek.
+
+
+## Running from your code
+
+If you would prefer to write your own rake task to run JSLint, you can create and execute the JSLint object manually:
+
+    require 'jslint'
+    
+    lint = JSLint::Lint.new(
+      :paths => ['public/javascripts/**/*.js'],
+      :exclude_paths => ['public/javascripts/vendor/**/*.js'],
+      :config_path => 'config/jslint.yml'
+    )
+    
+    lint.run
 
 
 ## Additional options
