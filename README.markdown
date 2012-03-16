@@ -29,9 +29,11 @@ or by installing the gem manually with `gem install jslint_on_rails` and loading
 
         require 'jslint/tasks'
 
-Regardless of the Rails version it's strongly recommended that you create your own copy of the JSLint config file provided by the gem and tweak it to suit your preferences. To create a new config file from the template in your config directory, call this rake task:
+## Configuration
 
-    rake jslint:copy_config
+It's strongly recommended that you create your own copy of the JSLint config file provided by the gem and tweak it to suit your preferences. To create a new config file from the template in your config directory, call this rake task:
+
+    [bundle exec] rake jslint:copy_config
 
 This will create a config file at `config/jslint.yml` listing all available options. If for some reason you'd like to put the config file at a different location, set the `config_path` variable somewhere in your Rakefile:
 
