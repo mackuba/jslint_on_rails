@@ -70,6 +70,16 @@ describe JSLint::Lint do
     lambda { lint.run }.should_not raise_error
   end
 
+  it "should use JSHint if asked for" do
+    lint = JSLint::Lint.new :linter => :jshint
+    setup_java(lint)
+    lint.should_receive(:call_java_with_status).
+      once.
+      with(an_instance_of(String), an_instance_of(String), /#{JSLint::JSHINT_FILE}/).
+      and_return(true)
+    lambda { lint.run }.should_not raise_error
+  end
+
   it "should only do Java check once" do
     lint = JSLint::Lint.new
     setup_java(lint)
