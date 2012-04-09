@@ -1,3 +1,9 @@
+Version 1.1 (09.04.2012)
+
+* removed support for installing as a Rails plugin
+* doesn't auto-generate jslint.yml if it doesn't exist (create one explicitly using the rake task if you want)
+* no need to set JSLint.config_path (if you aren't using the Railtie) if the file is in the default location
+
 Version 1.0.7 (12.09.2011)
 
 * fixed problem with local options from one file being applied to all subsequent files
