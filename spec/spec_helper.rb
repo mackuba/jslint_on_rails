@@ -3,16 +3,6 @@ require 'pp' # fix for fakefs/pp incompatibility in Ruby 1.9.3
 require 'fakefs'
 
 module Rails
-  class Railtie
-    def self.rake_tasks
-    end
-  end
-end
-
-module FileUtils
-  def copy(*args)
-    cp(*args)
-  end
 end
 
 module FakeFS
