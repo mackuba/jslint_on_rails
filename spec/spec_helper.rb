@@ -2,12 +2,6 @@ require 'jslint'
 require 'pp' # fix for fakefs/pp incompatibility in Ruby 1.9.3
 require 'fakefs'
 
-module JSLint::Utils
-  # disable logging to stdout
-  def self.xprint(x) ; end
-  def self.xputs(x) ; end
-end
-
 module Rails
   class Railtie
     def self.rake_tasks
@@ -42,4 +36,10 @@ end
 
 RSpec.configure do |config|
   config.include SpecHelper
+
+  config.before do
+    # disable logging to stdout
+    JSLint::Utils.stub(:display)
+    JSLint::Utils.stub(:log)
+  end
 end
