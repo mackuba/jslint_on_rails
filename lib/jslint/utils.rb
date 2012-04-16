@@ -7,17 +7,26 @@ module JSLint
   DEFAULT_CONFIG_FILE = File.expand_path(File.dirname(__FILE__) + "/config/jslint.yml")
 
   class << self
-    attr_accessor :config_path
-  end
+    attr_writer :config_path
 
-  self.config_path = if defined?(Rails)
-    File.join(Rails.root, 'config', 'jslint.yml')
-  else
-    'config/jslint.yml'
+    def config_path
+      @config_path || JSLint::Utils.default_config_path
+    end
   end
 
   module Utils
     class << self
+      def in_rails?
+        defined?(Rails)
+      end
+
+      def default_config_path
+        if in_rails?
+          File.expand_path(File.join(Rails.root, 'config', 'jslint.yml'))
+        else
+          'config/jslint.yml'
+        end
+      end
 
       def xprint(txt)
         print txt
@@ -55,7 +64,6 @@ module JSLint
       end
 
       def copy_config_file
-        raise ArgumentError, "Please set JSLint.config_path" if JSLint.config_path.nil?
         xprint "Creating example JSLint config file in #{File.expand_path(JSLint.config_path)}... "
         if File.exists?(JSLint.config_path)
           xputs "\n\nWarning: config file exists, so it won't be overwritten. " +

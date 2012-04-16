@@ -8,9 +8,41 @@ describe JSLint::Utils do
     create_config "default config file"
   end
 
-  it "should have a config_path setting" do
-    JSLint.config_path = 'some/path'
-    JSLint.config_path.should == 'some/path'
+  describe ".config_path" do
+    context "if config path is set explicitly" do
+      let(:path) { 'some/path' }
+
+      before { JSLint.config_path = path }
+
+      it "should return the path that was set" do
+        JSLint.config_path.should == path
+      end
+    end
+
+    context "if config path is not set" do
+      before { JSLint.config_path = nil }
+
+      context "if JSLint is run within Rails" do
+        before do
+          JSLint::Utils.stub(:in_rails? => true)
+          Rails.stub(:root => '/dir')
+        end
+
+        it "should return config/jslint.yml in Rails project directory" do
+          JSLint.config_path.should == '/dir/config/jslint.yml'
+        end
+      end
+
+      context "if JSLint is not run within Rails" do
+        before do
+          JSLint::Utils.stub(:in_rails? => false)
+        end
+
+        it "should return config/jslint.yml in current directory" do
+          JSLint.config_path.should == 'config/jslint.yml'
+        end
+      end
+    end
   end
 
   describe "paths_from_command_line" do
@@ -90,11 +122,6 @@ describe JSLint::Utils do
   end
 
   describe "copy_config_file" do
-    it "throw an error if config path isn't set" do
-      JSLint.config_path = nil
-      lambda { JSLint::Utils.copy_config_file }.should raise_error(ArgumentError)
-    end
-
     it "should copy default config to config_path" do
       JSLint.config_path = "newfile.yml"
       FileUtils.should_receive(:copy).with(JSLint::DEFAULT_CONFIG_FILE, "newfile.yml")
