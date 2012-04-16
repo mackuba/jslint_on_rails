@@ -1,3 +1,7 @@
+Version 1.1.1 (16.04.2012)
+
+* fixed issue with jslint:copy_config task
+
 Version 1.1 (09.04.2012)
 
 * removed support for installing as a Rails plugin
