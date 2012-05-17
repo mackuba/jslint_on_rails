@@ -12,7 +12,15 @@ Gem::Specification.new do |s|
   s.author = "Jakub Suder"
   s.email = "jakub.suder@gmail.com"
 
-  s.requirements = ['Java JRE (5.0 or later)']
-  s.files = ['MIT-LICENSE', 'README.markdown', 'Changelog.markdown', 'Gemfile', 'Gemfile.lock', 'Rakefile'] +
-    Dir['lib/**/*'] + Dir['spec/**/*']
+  s.requirements = ['JS engine compatible with execjs', 'JSON engine compatible with multi_json']
+
+  s.add_dependency 'execjs', '>= 1.3.2'
+  s.add_dependency 'multi_json', '>= 1.3.5'
+
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'fakefs', '0.3.2'
+
+  s.files = %w(MIT-LICENSE README.markdown Changelog.markdown Gemfile Gemfile.lock Rakefile)
+  s.files += Dir['lib/**/*'] + Dir['spec/**/*']
 end

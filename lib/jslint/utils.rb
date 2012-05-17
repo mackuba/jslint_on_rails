@@ -36,6 +36,11 @@ module JSLint
         puts txt
       end
 
+      def pluralize(amount, word)
+        s = "s" unless amount == 1
+        "#{amount} #{word}#{s}"
+      end
+
       def load_config_file(file_name)
         if file_name && File.exists?(file_name) && File.file?(file_name) && File.readable?(file_name)
           YAML.load_file(file_name)

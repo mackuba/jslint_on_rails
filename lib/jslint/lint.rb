@@ -1,15 +1,10 @@
 require 'jslint/errors'
 require 'jslint/utils'
+require 'execjs'
+require 'multi_json'
 
 module JSLint
-
   PATH = File.dirname(__FILE__)
-
-  TEST_JAR_FILE = File.expand_path("#{PATH}/vendor/test.jar")
-  RHINO_JAR_FILE = File.expand_path("#{PATH}/vendor/rhino.jar")
-  TEST_JAR_CLASS = "Test"
-  RHINO_JAR_CLASS = "org.mozilla.javascript.tools.shell.Main"
-
   JSLINT_FILE = File.expand_path("#{PATH}/vendor/jslint.js")
 
   class Lint
@@ -22,10 +17,7 @@ module JSLint
       default_config = Utils.load_config_file(DEFAULT_CONFIG_FILE)
       custom_config = Utils.load_config_file(options[:config_path] || JSLint.config_path)
       @config = default_config.merge(custom_config)
-
-      if @config['predef'].is_a?(Array)
-        @config['predef'] = @config['predef'].join(",")
-      end
+      @config['predef'] = @config['predef'].split(",") unless @config['predef'].is_a?(Array)
 
       included_files = files_matching_paths(options, :paths)
       excluded_files = files_matching_paths(options, :exclude_paths)
@@ -36,37 +28,68 @@ module JSLint
     end
 
     def run
-      check_java
-      Utils.log "Running JSLint:\n\n"
-      arguments = "#{JSLINT_FILE} #{option_string.inspect.gsub(/\$/, "\\$")} #{@file_list.join(' ')}"
-      success = call_java_with_status(RHINO_JAR_FILE, RHINO_JAR_CLASS, arguments)
-      raise LintCheckFailure, "JSLint test failed." unless success
+      raise NoEngineException, "No JS engine available" unless js_engine
+      Utils.log "Running JSLint via #{js_engine.name}:\n\n"
+
+      errors = @file_list.map { |file| process_file(file) }.flatten
+
+      if errors.length == 0
+        Utils.log "\nNo JS errors found."
+      else
+        Utils.log "\nFound #{Utils.pluralize(errors.length, 'error')}."
+        raise LintCheckFailure, "JSLint test failed."
+      end
     end
 
 
     private
 
-    def call_java_with_output(jar, mainClass, arguments = "")
-      %x(java -cp #{jar} #{mainClass} #{arguments})
+    def js_engine
+      ExecJS.runtime
     end
 
-    def call_java_with_status(jar, mainClass, arguments = "")
-      system("java -cp #{jar} #{mainClass} #{arguments}")
-    end
+    def process_file(filename)
+      Utils.display "checking #{filename}... "
+      errors = []
 
-    def option_string
-      @config.map { |k, v| "#{k}=#{v.inspect}" }.join('&')
-    end
+      if File.exist?(filename)
+        source = File.read(filename)
+        errors = run_lint(source)
 
-    def check_java
-      unless @java_ok
-        java_test = call_java_with_output(TEST_JAR_FILE, TEST_JAR_CLASS)
-        if java_test.strip == "OK"
-          @java_ok = true
+        if errors.length == 0
+          Utils.log "OK"
         else
-          raise NoJavaException, "Please install Java before running JSLint."
+          Utils.log print(Utils.pluralize(errors.length, "error") + ":\n");
+
+          errors.each do |error|
+            Utils.log "Lint at line #{error['line']} character #{error['character']}: #{error['reason']}"
+
+            if error['evidence']
+              evidence = error['evidence'].gsub(/^\s*(\S*(\s+\S+)*)\s*$/) { $1 }
+              Utils.log(evidence)
+            end
+
+            Utils.log ''
+          end
         end
+      else
+        Utils.log "Error: couldn't open file."
       end
+
+      errors
+    end
+
+    def run_lint(source)
+      code = %(
+        JSLINT(#{source.inspect}, #{MultiJson.dump(@config)});
+        return JSLINT.errors;
+      )
+
+      context.exec(code)
+    end
+
+    def context
+      @context ||= ExecJS.compile(File.read(JSLINT_FILE))
     end
 
     def files_matching_paths(options, field)
@@ -75,7 +98,5 @@ module JSLint
       file_list = path_list.map { |p| Dir[p] }.flatten
       Utils.unique_files(file_list)
     end
-
   end
-
 end
