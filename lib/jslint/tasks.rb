@@ -13,7 +13,7 @@ task :jslint do
     exclude_paths = []
   end
 
-  lint = JSLint::Lint.new :paths => include_paths, :exclude_paths => exclude_paths
+  lint = JSLint::Runner.new :paths => include_paths, :exclude_paths => exclude_paths
   lint.run
 end
 
@@ -27,7 +27,7 @@ namespace :jslint do
       puts "\n\nWarning: config file exists, so it won't be overwritten. " +
           "You can copy it manually from the jslint_on_rails directory if you want to reset it."
     else
-      FileUtils.copy(JSLint::DEFAULT_CONFIG_FILE, JSLint.config_path)
+      FileUtils.copy(JSLint::Config::DEFAULT_CONFIG_FILE, JSLint.config_path)
       puts "done."
     end
   end

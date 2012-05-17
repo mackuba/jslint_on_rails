@@ -104,18 +104,32 @@ If you want to run JSLint on Rails automatically everytime you save a JS file, c
 
 ## Running from your code
 
-If you would prefer to write your own rake task to run JSLint, you can create and execute the JSLint object manually:
+If you would prefer to write your own rake task to run JSLint, you can create and execute the JSLint runner object manually:
 
-    require 'jslint'
-    
-    lint = JSLint::Lint.new(
-      :paths => ['public/javascripts/**/*.js'],
-      :exclude_paths => ['public/javascripts/vendor/**/*.js'],
-      :config_path => 'config/jslint.yml'
-    )
-    
-    lint.run
+```ruby
+require 'jslint'
 
+lint = JSLint::Runner.new(
+  :paths => ['public/javascripts/**/*.js'],
+  :exclude_paths => ['public/javascripts/vendor/**/*.js'],
+  :config_path => 'config/jslint.yml'
+)
+
+lint.run
+```
+
+Or you can go even more low-level and just pass blocks of Javascript code to JSLint for testing:
+
+```ruby
+require 'jslint'
+
+lint = JSLint::Engine.new('config/jslint.yml')
+errors = lint.check_file(File.read('public/javascripts/application.js'))
+
+errors.each do |error|
+  puts "#{error.line}:#{error.character}: #{error.reason}"
+end
+```
 
 ## Additional options
 
