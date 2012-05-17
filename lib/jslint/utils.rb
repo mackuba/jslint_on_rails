@@ -67,17 +67,6 @@ module JSLint
         argument = ENV[field] || ENV[field.upcase]
         argument && argument.split(/,/)
       end
-
-      def copy_config_file
-        display "Creating example JSLint config file in #{File.expand_path(JSLint.config_path)}... "
-        if File.exists?(JSLint.config_path)
-          log "\n\nWarning: config file exists, so it won't be overwritten. " +
-              "You can copy it manually from the jslint_on_rails directory if you want to reset it."
-        else
-          FileUtils.copy(JSLint::DEFAULT_CONFIG_FILE, JSLint.config_path)
-          log "done."
-        end
-      end
     end
   end
 end
