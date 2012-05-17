@@ -5,14 +5,13 @@
 **JSLint on Rails** is a Ruby library which lets you run
 the [JSLint JavaScript code checker](https://github.com/douglascrockford/JSLint) on your Javascript code easily.
 
-Note: to run JSLint on Rails you need to have **Java** available on your machine - it's required because JSLint is
-itself written in JavaScript, and is run using the [Rhino](http://www.mozilla.org/rhino) JavaScript engine (written in
-Java). Any decent version of Java will do (and by decent I mean 5.0 or later).
 
+## Requirements
 
-## Compatibility
-
-Latest version should be compatible with Ruby 1.8.7 and 1.9.2+ (check [Travis build status](http://travis-ci.org/#!/psionides/jslint_on_rails)), and also with Rails 2.x and 3.x.
+* Ruby 1.8.7 or 1.9.2+
+* Javascript engine compatible with [execjs](https://github.com/sstephenson/execjs) (on Mac and Windows it's provided by the OS)
+* JSON engine compatible with [multi_json](https://github.com/intridea/multi_json) (included in Ruby 1.9, on 1.8 use e.g. [json gem](http://rubygems.org/gems/json))
+* should work with (but doesn't require) Rails 2.x and 3.x
 
 
 ## Installation
