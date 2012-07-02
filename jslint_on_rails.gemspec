@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'execjs', '>= 1.3.2'
   s.add_dependency 'multi_json', '>= 1.3.5'
   s.add_dependency 'hashie', '>= 1.2.0'
+  s.add_dependency 'rainbow', '>= 1.1.4'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rake'

@@ -22,9 +22,9 @@ module JSLint
       errors = @config.files.map { |f| process_file(f) }
 
       if errors.length == 0
-        puts "\nNo JS errors found."
+        puts "\nNo JS errors found.".foreground(:green)
       else
-        puts "\nFound #{Utils.pluralize(errors.length, 'error')}."
+        puts "\nFound #{Utils.pluralize(errors.length, 'error')}.".foreground(:red)
         raise LintCheckFailure, "JSLint test failed."
       end
     end
@@ -41,9 +41,9 @@ module JSLint
         errors = @engine.check_file(source)
 
         if errors.length == 0
-          puts "OK"
+          puts "OK".foreground(:green)
         else
-          puts Utils.pluralize(errors.length, "error") + ":\n"
+          puts (Utils.pluralize(errors.length, "error") + ":\n").foreground(:red)
 
           errors.each do |error|
             puts "Lint at line #{error.line} character #{error.character}: #{error.reason}"
@@ -57,7 +57,7 @@ module JSLint
           end
         end
       else
-        puts "Error: couldn't open file."
+        puts "Error: couldn't open file.".foreground(:yellow)
       end
 
       errors
