@@ -41,7 +41,7 @@ evil:     false     # true if eval should be allowed
 forin:    true      # true if unfiltered 'for in' statements should be allowed
 fragment: true      # true if HTML fragments should be allowed
 laxbreak: false     # true if statement breaks should not be checked
-on:       false     # true if HTML event handlers (e.g. onclick="...") should be allowed
+"on":     false     # true if HTML event handlers (e.g. onclick="...") should be allowed
 sub:      false     # true if subscript notation may be used for expressions better expressed in dot notation
 
 # other options
