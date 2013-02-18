@@ -1,6 +1,6 @@
 # JSLint on Rails
 
-[![Build Status](https://secure.travis-ci.org/psionides/jslint_on_rails.png)](http://travis-ci.org/psionides/jslint_on_rails)
+[![Build Status](https://secure.travis-ci.org/jsuder/jslint_on_rails.png)](http://travis-ci.org/jsuder/jslint_on_rails)
 
 **JSLint on Rails** is a Ruby library which lets you run
 the [JSLint JavaScript code checker](https://github.com/douglascrockford/JSLint) on your Javascript code easily.
@@ -170,12 +170,12 @@ So I've tweaked the code that creates this warning so that it doesn't print it i
 
 Some people have asked about [JSHint](http://jshint.com) support (some have even made forks replacing JSLint with JSHint). I like the idea of a less strict lint giving the user more control; the reason I haven't integrated JSHint yet is because I want the gem to provide both JSLint and JSHint and let you choose which engine you want to use. The thing is, I can't do that easily because their option sets have diverged - a few options have been changed in JSLint since JSHint was forked off from it, and JSHint has changed or added some other options. There was even [a plan](https://github.com/jshint/jshint/issues/166) to completely redesign the option system in JSHint. So I've decided to hold off the integration until I can be sure that the option sets won't be completely changed again. I'm hoping this might happen as a part of the [JSHint Next](https://github.com/jshint/jshint-next) project, but I don't know what the timeline is.
 
-I haven't been updating JSLint for the same reason - some options have changed there and I'd rather wait until I can update everything together at the same time. If you're impatient, check out some of the [forks that use JSHint](https://github.com/psionides/jslint_on_rails/network); some of them have even been released as gems (e.g. see [jshint\_on\_rails](https://rubygems.org/gems/jshint_on_rails)) - although as far as I know, none of them have adapted the config file template to match JSHint's option set.
+I haven't been updating JSLint for the same reason - some options have changed there and I'd rather wait until I can update everything together at the same time. If you're impatient, check out some of the [forks that use JSHint](https://github.com/jsuder/jslint_on_rails/network); some of them have even been released as gems (e.g. see [jshint\_on\_rails](https://rubygems.org/gems/jshint_on_rails)) - although as far as I know, none of them have adapted the config file template to match JSHint's option set.
 
 Another thing that's planned for 2.0, whenever that happens, is a redesign of the Javascript runner code to make it possible to use other ways of running Javascript - probably using [execjs](https://github.com/sstephenson/execjs).
 
 
 ## Credits
 
-* JSLint on Rails was created by [Jakub Suder](http://psionides.jogger.pl), licensed under MIT License
+* JSLint on Rails was created by [Jakub Suder](http://psionides.eu), licensed under MIT License
 * JSLint was created by [Douglas Crockford](http://jslint.com)
